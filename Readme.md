@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
 * Студент: [Kseniia Lazarov](https://up.htmlacademy.ru/react/15/user/2384991).
-* Наставник: `Неизвестно`.
+* Наставник: [Yulia Volkova](https://htmlacademy.ru/profile/julie_volkova).
 
 ---
 
