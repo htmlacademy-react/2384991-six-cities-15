@@ -21,5 +21,6 @@ module.exports = {
       rules: { '@typescript-eslint/unbound-method': 'off' }
     },
   ],
+  ignorePatterns: ['.eslintrc.cjs'],
 };
 
