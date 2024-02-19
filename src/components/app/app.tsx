@@ -1,4 +1,4 @@
-import PageWrapper from '../layout/page-wrapper/page-wrapper.tsx';
+import MainPage from '../../pages/main-page/main-page.tsx';
 
 type AppScreenProps = {
   rentalsCount: number;
@@ -6,7 +6,7 @@ type AppScreenProps = {
 
 function App({rentalsCount}: AppScreenProps): JSX.Element {
   return(
-    <PageWrapper rentalsCount={rentalsCount}/>
+    <MainPage rentalsCount={rentalsCount}/>
   );
 }
 

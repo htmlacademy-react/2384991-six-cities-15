@@ -12,3 +12,5 @@ root.render(
     <App rentalsCount={Setting.RentalsCount}/>
   </React.StrictMode>
 );
+
+

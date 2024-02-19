@@ -1,13 +1,30 @@
-function HotelCard(): JSX.Element {
+type HotelCardProps = {
+  imageWidth: number;
+  imageHeight: number;
+  baseClassName?: string;
+  title: string;
+  type: string;
+  price: number;
+  isFavorite: boolean;
+  isPremium: boolean;
+  previewImage: string;
+}
+
+function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, type, price, isFavorite, isPremium, previewImage }: HotelCardProps): JSX.Element {
   return(
-    <article className="cities__card place-card">
-      <div className="cities__image-wrapper place-card__image-wrapper">
+    <article className={`${baseClassName}__card place-card`}>
+      {isPremium && (
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div>
+      )}
+      <div className={`${baseClassName}__image-wrapper place-card__image-wrapper`}>
         <a href="#">
           <img
             className="place-card__image"
-            src="img/room.jpg"
-            width={260}
-            height={200}
+            src={previewImage}
+            width={imageWidth}
+            height={imageHeight}
             alt="Place image"
           />
         </a>
@@ -15,11 +32,11 @@ function HotelCard(): JSX.Element {
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">€80</b>
+            <b className="place-card__price-value">€{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
           <button
-            className="place-card__bookmark-button place-card__bookmark-button--active button"
+            className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
             type="button"
           >
             <svg
@@ -39,9 +56,9 @@ function HotelCard(): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">Wood and stone place</a>
+          <a href="#">{title}</a>
         </h2>
-        <p className="place-card__type">Room</p>
+        <p className="place-card__type">{type}</p>
       </div>
     </article>
   );
