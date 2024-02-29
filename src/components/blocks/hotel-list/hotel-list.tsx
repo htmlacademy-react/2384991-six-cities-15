@@ -15,24 +15,25 @@ function HotelList({ offers, imageWidth = 260, imageHeight = 200, baseClassName 
     classes.push('tabs__content');
   }
 
-  return(
+  return (
     <div className={classes.join(' ')}>
-      {offers.map((offer) => (
+      {offers.map(({ id, title, type, price, isFavorite, isPremium, previewImage }) => (
         <HotelCard
-          key={offer.id}
+          key={id}
           imageWidth={imageWidth}
           imageHeight={imageHeight}
-          title={offer.title}
-          type={offer.type}
-          price={offer.price}
-          isFavorite={offer.isFavorite}
-          isPremium={offer.isPremium}
-          previewImage={offer.previewImage}
+          title={title}
+          type={type}
+          price={price}
+          isFavorite={isFavorite}
+          isPremium={isPremium}
+          previewImage={previewImage}
           baseClassName={baseClassName}
         />
       ))}
     </div>
   );
 }
+
 
 export default HotelList;

@@ -1,5 +1,5 @@
 import { getRandomArrayElement, getRandomInteger, getRandomBoolean, createIdGenerator } from '../utils/common.ts';
-import { OFFER_COUNT, MAX_PRICE_VALUE, MAX_PHOTO_COUNT, TYPES, TITLES } from '../const.ts';
+import { OFFER_COUNT, MAX_PRICE_VALUE, MAX_PHOTO_COUNT, TYPES, TITLES, CITIES } from '../const.ts';
 
 const offersId = createIdGenerator();
 
@@ -11,6 +11,8 @@ const getRandomMockOffers = () => {
 
   const randomTitle = getRandomArrayElement(TITLES);
 
+  const randomCity = getRandomArrayElement(CITIES);
+
   return {
     id: offerId,
     title: randomTitle,
@@ -19,6 +21,9 @@ const getRandomMockOffers = () => {
     isFavorite: getRandomBoolean(),
     isPremium: getRandomBoolean(),
     previewImage: `img/apartment-0${getRandomInteger(MAX_PHOTO_COUNT)}.jpg`,
+    city: {
+      name: randomCity,
+    }
   };
 };
 
