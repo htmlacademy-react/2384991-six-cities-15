@@ -19,7 +19,9 @@ function App({rentalsCount}: AppScreenProps): JSX.Element {
         <Route path={AppRoute.Root} element={<Layout />}>
           <Route index element={<MainPage rentalsCount={rentalsCount} />}/>
           <Route path={AppRoute.Favorites} element={<FavoritesPage />}/>
-          <Route path={AppRoute.Offer} element={<OfferPage />}/>
+          <Route path={AppRoute.Offer} element={<OfferPage />}>
+            <Route path={AppRoute.OfferId} element={<OfferPage />}/>
+          </Route>
           <Route path={AppRoute.Login} element={<LoginPage />}/>
           <Route path={AppRoute.EmptyMain} element={<MainEmptyPage />}/>
           <Route path="*" element={<NotFoundPage />}/>

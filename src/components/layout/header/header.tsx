@@ -6,9 +6,7 @@ function Header(): JSX.Element {
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <a className="header__logo-link header__logo-link--active">
-              <Logo width={81} height={41}/>
-            </a>
+            <Logo width={81} height={41}/>
           </div>
           <nav className="header__nav">
             <ul className="header__nav-list">

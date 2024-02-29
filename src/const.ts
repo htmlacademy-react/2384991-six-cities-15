@@ -13,6 +13,7 @@ enum AppRoute {
   Login = 'login',
   Favorites = 'favorites',
   Offer = 'offer',
+  OfferId = ':offerId',
   EmptyMain = 'dev-main-empty',
 }
 
