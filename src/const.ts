@@ -8,6 +8,14 @@ const Setting = {
   RentalsCount: 312,
 } as const;
 
+enum AppRoute {
+  Root = '/',
+  Login = 'login',
+  Favorites = 'favorites',
+  Offer = 'offer',
+  EmptyMain = 'dev-main-empty',
+}
+
 const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
 const TYPES = ['Room', 'Apartment', 'House', 'Hotel'];
@@ -35,6 +43,7 @@ export type Offer = {
 
 export {
   Setting,
+  AppRoute,
   MAX_PRICE_VALUE,
   MAX_PHOTO_COUNT,
   MAX_OFFER_IMAGE_COUNT,
