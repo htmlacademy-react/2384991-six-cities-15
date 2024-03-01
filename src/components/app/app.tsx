@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { AppRoute } from '../../const.ts';
 import { getAuthorizationStatus } from '../../utils/authorization-status.ts';
 import MainPage from '../../pages/main-page/main-page.tsx';
@@ -17,40 +18,46 @@ type AppScreenProps = {
 function App({ rentalsCount }: AppScreenProps): JSX.Element {
   const authorizationStatus = getAuthorizationStatus();
   return(
-    <BrowserRouter>
-      <Routes>
-        <Route path={ AppRoute.Root } element={ <Layout /> }>
-          <Route
-            index
-            element={ <MainPage rentalsCount={ rentalsCount } /> }
-          />
-          <Route
-            path={ AppRoute.Favorites }
-            element={
-              <PrivateRoute authorizationStatus={ authorizationStatus }>
-                <FavoritesPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path={ AppRoute.Offer }
-            element={ <OfferPage /> }
-          />
-          <Route
-            path={ AppRoute.Login }
-            element={ <LoginPage /> }
-          />
-          <Route
-            path={ AppRoute.EmptyMain }
-            element={ <MainEmptyPage /> }
-          />
-          <Route
-            path="*"
-            element={ <NotFoundPage /> }
-          />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path={ AppRoute.Root } element={ <Layout /> }>
+            <Route
+              index
+              element={ <MainPage rentalsCount={ rentalsCount } /> }
+            />
+            <Route
+              path={ AppRoute.Favorites }
+              element={
+                <PrivateRoute authorizationStatus={ authorizationStatus }>
+                  <FavoritesPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path={ AppRoute.Offer }
+              element={ <OfferPage /> }
+            />
+            <Route
+              path={ AppRoute.Login }
+              element={
+                <PrivateRoute authorizationStatus={ authorizationStatus } isReverse>
+                  <LoginPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path={ AppRoute.EmptyMain }
+              element={ <MainEmptyPage /> }
+            />
+            <Route
+              path="*"
+              element={ <NotFoundPage /> }
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
 

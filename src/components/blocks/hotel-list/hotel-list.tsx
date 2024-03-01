@@ -1,5 +1,5 @@
-import { hotelOffers } from '../../../mocks/mocks.ts';
 import HotelCard from '../../ui/hotel-card/hotel-card.tsx';
+import { hotelOffers } from '../../../mocks/mocks.ts';
 
 type HotelListProps = {
   offers: typeof hotelOffers;

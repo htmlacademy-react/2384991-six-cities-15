@@ -1,8 +1,11 @@
-import Footer from '../../components/layout/footer/footer.tsx';
+import { Helmet } from 'react-helmet-async';
 
 function FavoritesEmptyPage(): JSX.Element {
   return(
     <>
+      <Helmet>
+        <title>6 cities. Nothing yet saved.</title>
+      </Helmet>
       <main className="page__main page__main--favorites page__main--favorites-empty">
         <div className="page__favorites-container container">
           <section className="favorites favorites--empty">
@@ -16,7 +19,6 @@ function FavoritesEmptyPage(): JSX.Element {
           </section>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

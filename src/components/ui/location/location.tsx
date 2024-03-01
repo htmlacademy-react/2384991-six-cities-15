@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../../const';
+
 type LocationProps = {
   city: string;
   isFavoritePage: boolean;
@@ -5,9 +8,9 @@ type LocationProps = {
 
 function Location({city, isFavoritePage}: LocationProps): JSX.Element {
   const content = (
-    <a className="locations__item-link tabs__item" href="#">
+    <Link className="locations__item-link tabs__item" to={ AppRoute.Root }>
       <span>{city}</span>
-    </a>
+    </Link>
   );
 
   return isFavoritePage ? (
