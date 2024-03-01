@@ -1,10 +1,8 @@
 import Footer from '../../components/layout/footer/footer.tsx';
-import Header from '../../components/layout/header/header.tsx';
 
 function FavoritesEmptyPage(): JSX.Element {
   return(
-    <div className="page page--favorites-empty">
-      <Header />
+    <>
       <main className="page__main page__main--favorites page__main--favorites-empty">
         <div className="page__favorites-container container">
           <section className="favorites favorites--empty">
@@ -19,7 +17,7 @@ function FavoritesEmptyPage(): JSX.Element {
         </div>
       </main>
       <Footer />
-    </div>
+    </>
   );
 }
 

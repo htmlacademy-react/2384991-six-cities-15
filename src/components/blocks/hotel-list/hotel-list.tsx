@@ -17,7 +17,7 @@ function HotelList({ offers, imageWidth = 260, imageHeight = 200, baseClassName 
 
   return (
     <div className={classes.join(' ')}>
-      {offers.map(({ id, title, type, price, isFavorite, isPremium, previewImage }) => (
+      {offers && offers.map(({ id, title, type, price, isFavorite, isPremium, previewImage }) => (
         <HotelCard
           key={id}
           imageWidth={imageWidth}

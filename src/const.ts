@@ -10,11 +10,16 @@ const Setting = {
 
 enum AppRoute {
   Root = '/',
-  Login = 'login',
-  Favorites = 'favorites',
-  Offer = 'offer',
-  OfferId = ':offerId',
-  EmptyMain = 'dev-main-empty',
+  Login = '/login',
+  Favorites = '/favorites',
+  Offer = '/offer/:id',
+  EmptyMain = '/dev-main-empty',
+}
+
+enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
 }
 
 const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
@@ -45,6 +50,7 @@ export type Offer = {
 export {
   Setting,
   AppRoute,
+  AuthorizationStatus,
   MAX_PRICE_VALUE,
   MAX_PHOTO_COUNT,
   MAX_OFFER_IMAGE_COUNT,
