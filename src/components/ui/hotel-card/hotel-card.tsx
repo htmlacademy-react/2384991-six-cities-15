@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../../const.ts';
+
 type HotelCardProps = {
   imageWidth: number;
   imageHeight: number;
@@ -19,7 +22,7 @@ function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, t
         </div>
       )}
       <div className={`${baseClassName}__image-wrapper place-card__image-wrapper`}>
-        <a href="#">
+        <Link to={ AppRoute.Offer }>
           <img
             className="place-card__image"
             src={previewImage}
@@ -27,7 +30,7 @@ function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, t
             height={imageHeight}
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -56,7 +59,7 @@ function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, t
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <Link to={ AppRoute.Offer }>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

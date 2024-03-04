@@ -1,9 +1,9 @@
+import { Helmet } from 'react-helmet-async';
+import { hotelOffers } from '../../mocks/mocks.ts';
 import HotelList from '../../components/blocks/hotel-list/hotel-list.tsx';
 import LocationList from '../../components/blocks/location-list/location-list.tsx';
 import Map from '../../components/ui/map/map.tsx';
-import Header from '../../components/layout/header/header.tsx';
 import SortingForm from '../../components/blocks/sorting-form/sorting-form.tsx';
-import { hotelOffers } from '../../mocks/mocks.ts';
 
 type MainPageProps = {
   rentalsCount: number;
@@ -11,8 +11,10 @@ type MainPageProps = {
 
 function MainPage({rentalsCount}: MainPageProps): JSX.Element {
   return(
-    <div className="page page--gray page--main">
-      <Header />
+    <>
+      <Helmet>
+        <title>6 cities.</title>
+      </Helmet>
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
@@ -34,7 +36,7 @@ function MainPage({rentalsCount}: MainPageProps): JSX.Element {
           </div>
         </div>
       </main>
-    </div>
+    </>
   );
 }
 

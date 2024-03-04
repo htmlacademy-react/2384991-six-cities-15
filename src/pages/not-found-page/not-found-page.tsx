@@ -1,26 +1,22 @@
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import LocationList from '../../components/blocks/location-list/location-list';
+import { AppRoute } from '../../const';
 
-function MainEmptyPage(): JSX.Element {
+function NotFoundPage(): JSX.Element {
   return(
     <>
       <Helmet>
-        <title>6 cities. No places to stay available</title>
+        <title>6 cities. Page not found</title>
       </Helmet>
       <main className="page__main page__main--index page__main--index-empty">
-        <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <LocationList />
-          </section>
-        </div>
+        <h1 className="visually-hidden">Page not found</h1>
         <div className="cities">
           <div className="cities__places-container cities__places-container--empty container">
             <section className="cities__no-places">
               <div className="cities__status-wrapper tabs__content">
-                <b className="cities__status">No places to stay available</b>
+                <b className="cities__status">404. Page not found</b>
                 <p className="cities__status-description">
-                  We could not find any property available at the moment in Dusseldorf
+                  Uh oh! Something went wrong. Go back to our <span className="cities__status-link"><Link to={ AppRoute.Root }>main page</Link></span>
                 </p>
               </div>
             </section>
@@ -32,6 +28,4 @@ function MainEmptyPage(): JSX.Element {
   );
 }
 
-export default MainEmptyPage;
-
-
+export default NotFoundPage;

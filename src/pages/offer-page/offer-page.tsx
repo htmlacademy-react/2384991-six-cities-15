@@ -1,11 +1,11 @@
-import Header from '../../components/layout/header/header.tsx';
+import { Helmet } from 'react-helmet-async';
+import { hotelOffers } from '../../mocks/mocks.ts';
+import { createIdGenerator } from '../../utils/common.ts';
+import { MAX_OFFER_IMAGE_COUNT } from '../../const.ts';
 import HotelList from '../../components/blocks/hotel-list/hotel-list.tsx';
 import Map from '../../components/ui/map/map.tsx';
 import OfferImage from '../../components/ui/offer-image/offer-image.tsx';
 import OfferInsideList from '../../components/blocks/offer-inside-list/offer-inside-list.tsx';
-import { hotelOffers } from '../../mocks/mocks.ts';
-import { createIdGenerator } from '../../utils/common.ts';
-import { MAX_OFFER_IMAGE_COUNT } from '../../const.ts';
 import ReviewsList from '../../components/blocks/reviews-list/reviews-list.tsx';
 import RatingForm from '../../components/blocks/rating-form/rating-form.tsx';
 
@@ -13,8 +13,10 @@ const offerImageId = createIdGenerator();
 
 function OfferPage(): JSX.Element {
   return(
-    <div className="page">
-      <Header />
+    <>
+      <Helmet>
+        <title>6 cities. Our offers</title>
+      </Helmet>
       <main className="page__main page__main--offer">
         <section className="offer">
           <div className="offer__gallery-container container">
@@ -110,7 +112,8 @@ function OfferPage(): JSX.Element {
           </section>
         </div>
       </main>
-    </div>
+    </>
+
   );
 }
 
