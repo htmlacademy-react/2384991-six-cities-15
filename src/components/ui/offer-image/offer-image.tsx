@@ -6,7 +6,7 @@ function OfferImage(): JSX.Element {
     <div className="offer__image-wrapper">
       <img
         className="offer__image"
-        src={`img/apartment-0${getRandomInteger(MAX_PHOTO_COUNT)}.jpg`}
+        src={`https://15.design.htmlacademy.pro/static/hotel/${getRandomInteger(MAX_PHOTO_COUNT)}.jpg`}
         alt="Photo studio"
       />
     </div>

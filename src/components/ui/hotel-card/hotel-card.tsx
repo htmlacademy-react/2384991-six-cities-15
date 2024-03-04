@@ -1,19 +1,20 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../../const.ts';
 
 type HotelCardProps = {
   imageWidth: number;
   imageHeight: number;
   baseClassName?: string;
+  id: string;
   title: string;
   type: string;
   price: number;
   isFavorite: boolean;
   isPremium: boolean;
   previewImage: string;
+  rating: number;
 }
 
-function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, type, price, isFavorite, isPremium, previewImage }: HotelCardProps): JSX.Element {
+function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, type, price, isFavorite, isPremium, previewImage, rating, id }: HotelCardProps): JSX.Element {
   return(
     <article className={`${baseClassName}__card place-card`}>
       {isPremium && (
@@ -22,7 +23,7 @@ function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, t
         </div>
       )}
       <div className={`${baseClassName}__image-wrapper place-card__image-wrapper`}>
-        <Link to={ AppRoute.Offer }>
+        <Link to={ `/offer/${id}` }>
           <img
             className="place-card__image"
             src={previewImage}
@@ -54,12 +55,12 @@ function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, t
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '80%' }} />
+            <span style={{ width: `${rating * 20}%` }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={ AppRoute.Offer }>{title}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

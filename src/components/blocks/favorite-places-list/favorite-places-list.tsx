@@ -1,6 +1,6 @@
 import FavoritePlace from '../../ui/favorites-places/favorite-place';
-import { hotelOffers } from '../../../mocks/mocks.ts';
-import { Offer } from '../../../const';
+import { hotelOffers } from '../../../mocks/offers.ts';
+import { Offer } from '../../../types/types.ts';
 
 const groupOffersByCity = (offers: Offer[]) => offers.reduce((accumulator: Record<string, Offer[]>, offer) => {
   const cityName = offer.city.name;

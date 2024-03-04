@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async';
-import { hotelOffers } from '../../mocks/mocks.ts';
 import { createIdGenerator } from '../../utils/common.ts';
 import { MAX_OFFER_IMAGE_COUNT } from '../../const.ts';
 import HotelList from '../../components/blocks/hotel-list/hotel-list.tsx';
@@ -8,10 +7,15 @@ import OfferImage from '../../components/ui/offer-image/offer-image.tsx';
 import OfferInsideList from '../../components/blocks/offer-inside-list/offer-inside-list.tsx';
 import ReviewsList from '../../components/blocks/reviews-list/reviews-list.tsx';
 import RatingForm from '../../components/blocks/rating-form/rating-form.tsx';
+import { Offer } from '../../types/types.ts';
 
 const offerImageId = createIdGenerator();
 
-function OfferPage(): JSX.Element {
+type OfferPageProps = {
+  offers: Offer[];
+};
+
+function OfferPage({ offers }: OfferPageProps): JSX.Element {
   return(
     <>
       <Helmet>
@@ -108,7 +112,7 @@ function OfferPage(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighborhood</h2>
-            <HotelList offers={hotelOffers} baseClassName="near-places" className="near-places__list"/>
+            <HotelList offers={offers} baseClassName="near-places" className="near-places__list"/>
           </section>
         </div>
       </main>

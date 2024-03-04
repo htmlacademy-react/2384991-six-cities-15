@@ -10,12 +10,14 @@ import Layout from '../layout/layout/layout.tsx';
 import MainEmptyPage from '../../pages/main-empty-page/main-empty-page.tsx';
 import NotFoundPage from '../../pages/not-found-page/not-found-page.tsx';
 import PrivateRoute from '../routes/private-route/private-route.tsx';
+import { Offer } from '../../types/types.ts';
 
 type AppScreenProps = {
+  offers: Offer[];
   rentalsCount: number;
 }
 
-function App({ rentalsCount }: AppScreenProps): JSX.Element {
+function App({ rentalsCount, offers }: AppScreenProps,): JSX.Element {
   const authorizationStatus = getAuthorizationStatus();
   return(
     <HelmetProvider>
@@ -24,7 +26,7 @@ function App({ rentalsCount }: AppScreenProps): JSX.Element {
           <Route path={ AppRoute.Root } element={ <Layout /> }>
             <Route
               index
-              element={ <MainPage rentalsCount={ rentalsCount } /> }
+              element={ <MainPage rentalsCount={ rentalsCount } offers={offers} /> }
             />
             <Route
               path={ AppRoute.Favorites }
@@ -36,7 +38,7 @@ function App({ rentalsCount }: AppScreenProps): JSX.Element {
             />
             <Route
               path={ AppRoute.Offer }
-              element={ <OfferPage /> }
+              element={ <OfferPage offers={offers}/> }
             />
             <Route
               path={ AppRoute.Login }
