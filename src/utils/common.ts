@@ -1,6 +1,6 @@
 import { Location } from '../types/types.ts';
 
-const getRandomArrayElement = (items: string[]) => items[Math.floor(Math.random() * items.length)];
+const getRandomArrayElement = <T>(items: T[]): T => items[Math.floor(Math.random() * items.length)];
 
 const getRandomInteger = (max: number) => Math.floor(Math.random() * max) + 1;
 

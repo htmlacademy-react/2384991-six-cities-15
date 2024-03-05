@@ -1,8 +1,8 @@
 import HotelCard from '../../ui/hotel-card/hotel-card.tsx';
-import { Offer } from '../../../types/types.ts';
+import { HotelСardOffers } from '../../../types/types.ts';
 
 type HotelListProps = {
-  offers: Offer[];
+  offers: HotelСardOffers[];
   baseClassName?: string;
   className?: string;
   imageWidth?: number;
@@ -17,17 +17,17 @@ function HotelList({ offers, imageWidth = 260, imageHeight = 200, baseClassName 
 
   return (
     <div className={classes.join(' ')}>
-      {offers.map(({ id, title, type, price, isFavorite, isPremium, previewImage, rating, city }) => (
+      {offers.map((offer) => (
         <HotelCard
-          key={id}
+          key={offer.id}
           imageWidth={imageWidth}
           imageHeight={imageHeight}
-          {...{title, type, price, isFavorite, isPremium, previewImage, baseClassName, id, rating, city}}
+          baseClassName={baseClassName}
+          {...offer}
         />
       ))}
     </div>
   );
 }
-
 
 export default HotelList;

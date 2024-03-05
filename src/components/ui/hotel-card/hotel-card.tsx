@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../../types/types.ts';
+import { HotelСardOffers } from '../../../types/types.ts';
 
 type HotelCardAdditionalProps = {
   imageWidth: number;
@@ -7,7 +7,7 @@ type HotelCardAdditionalProps = {
   baseClassName?: string;
 }
 
-type HotelCardProps = Offer & HotelCardAdditionalProps;
+type HotelCardProps = HotelСardOffers & HotelCardAdditionalProps;
 
 function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, type, price, isFavorite, isPremium, previewImage, rating, id }: HotelCardProps): JSX.Element {
   return(
@@ -45,7 +45,7 @@ function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, t
             >
               <use xlinkHref="#icon-bookmark" />
             </svg>
-            <span className="visually-hidden">In bookmarks</span>
+            <span className="visually-hidden">{isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
           </button>
         </div>
         <div className="place-card__rating rating">

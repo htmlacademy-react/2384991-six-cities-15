@@ -6,11 +6,11 @@ import SortingForm from '../../components/blocks/sorting-form/sorting-form.tsx';
 import { Offer } from '../../types/types.ts';
 
 type MainPageProps = {
-  rentalsCount: number;
   offers: Offer[];
 }
 
-function MainPage({ rentalsCount, offers }: MainPageProps): JSX.Element {
+function MainPage({ offers }: MainPageProps): JSX.Element {
+  const placesTitle = offers.length === 1 ? 'place' : 'places';
   return(
     <>
       <Helmet>
@@ -27,7 +27,7 @@ function MainPage({ rentalsCount, offers }: MainPageProps): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{rentalsCount} places to stay in Amsterdam</b>
+              <b className="places__found">{offers.length} {placesTitle} to stay in Amsterdam</b>
               <SortingForm width={7} height={4} />
               <HotelList offers={offers}/>
             </section>

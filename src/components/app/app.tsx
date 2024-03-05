@@ -15,10 +15,9 @@ import { Offer, Review } from '../../types/types.ts';
 type AppScreenProps = {
   offers: Offer[];
   reviews: Review[];
-  rentalsCount: number;
 }
 
-function App({ rentalsCount, offers, reviews }: AppScreenProps,): JSX.Element {
+function App({ offers, reviews }: AppScreenProps,): JSX.Element {
   const authorizationStatus = getAuthorizationStatus();
   return(
     <HelmetProvider>
@@ -27,7 +26,7 @@ function App({ rentalsCount, offers, reviews }: AppScreenProps,): JSX.Element {
           <Route path={ AppRoute.Root } element={ <Layout /> }>
             <Route
               index
-              element={ <MainPage rentalsCount={ rentalsCount } offers={offers} /> }
+              element={ <MainPage offers={offers} /> }
             />
             <Route
               path={ AppRoute.Favorites }

@@ -8,6 +8,12 @@ export type CityLocations = {
   [key: string]: Location;
 };
 
+export type Host = {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
+};
+
 export type Offer = {
   id: string;
   title: string;
@@ -22,7 +28,15 @@ export type Offer = {
   isPremium: boolean;
   rating: number;
   previewImage: string;
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: Host;
+  images: string[];
+  maxAdults: number;
 };
+
+export type HotelСardOffers = Omit<Offer, 'description' | 'goods' | 'host' | 'images'>;
 
 type User = {
   name: string;

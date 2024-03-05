@@ -1,12 +1,13 @@
-import { getRandomInteger } from '../../../utils/common.ts';
-import { MAX_PHOTO_COUNT } from '../../../const.ts';
+type OfferImageProps = {
+  src: string;
+};
 
-function OfferImage(): JSX.Element {
+function OfferImage({ src }: OfferImageProps): JSX.Element {
   return(
     <div className="offer__image-wrapper">
       <img
         className="offer__image"
-        src={`https://15.design.htmlacademy.pro/static/hotel/${getRandomInteger(MAX_PHOTO_COUNT)}.jpg`}
+        src={src}
         alt="Photo studio"
       />
     </div>

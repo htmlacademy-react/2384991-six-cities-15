@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
 import { createIdGenerator } from '../../utils/common.ts';
-import { MAX_OFFER_IMAGE_COUNT } from '../../const.ts';
 import HotelList from '../../components/blocks/hotel-list/hotel-list.tsx';
 import Map from '../../components/ui/map/map.tsx';
 import OfferImage from '../../components/ui/offer-image/offer-image.tsx';
@@ -8,6 +7,8 @@ import OfferInsideList from '../../components/blocks/offer-inside-list/offer-ins
 import ReviewsList from '../../components/blocks/reviews-list/reviews-list.tsx';
 import RatingForm from '../../components/blocks/rating-form/rating-form.tsx';
 import { Offer, Review } from '../../types/types.ts';
+import { useParams } from 'react-router-dom';
+import NotFoundPage from '../not-found-page/not-found-page.tsx';
 
 const offerImageId = createIdGenerator();
 
@@ -17,6 +18,19 @@ type OfferPageProps = {
 };
 
 function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
+  const { id } = useParams();
+  const currentOffer: Offer | undefined = offers.find((offer: Offer) => offer.id === id);
+
+  if (!currentOffer) {
+    return <NotFoundPage />;
+  }
+
+  const { title, price, type, rating, isPremium, isFavorite, bedrooms, maxAdults, goods, description, host, images } = currentOffer;
+  const { name: hostName, avatarUrl, isPro } = host;
+
+  const bedroomsTitle = `${bedrooms > 1 ? 'bedrooms' : 'bedroom'}`;
+  const maxAdultsTitle = `${maxAdults > 1 ? 'adults' : 'adult'}`;
+
   return(
     <>
       <Helmet>
@@ -26,21 +40,23 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {Array.from({ length: MAX_OFFER_IMAGE_COUNT }).map(() => (
-                <OfferImage key={offerImageId()} />
+              {images.map((image) => (
+                <OfferImage key={offerImageId()} src={image} />
               ))}
             </div>
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              <div className="offer__mark">
-                <span>Premium</span>
-              </div>
+              {isPremium ?
+                <div className="offer__mark">
+                  <span>Premium</span>
+                </div> :
+                ''}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                  Beautiful &amp; luxurious studio at great location
+                  {title}
                 </h1>
-                <button className="offer__bookmark-button button" type="button">
+                <button className={`offer__bookmark-button button${isFavorite ? ' offer__bookmark-button--active' : ''}`} type="button">
                   <svg className="offer__bookmark-icon" width={31} height={33}>
                     <use xlinkHref="#icon-bookmark" />
                   </svg>
@@ -49,59 +65,54 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: '80%' }} />
+                  <span style={{ width: `${rating * 20}%` }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">4.8</span>
+                <span className="offer__rating-value rating__value">{rating}</span>
               </div>
               <ul className="offer__features">
-                <li className="offer__feature offer__feature--entire">Apartment</li>
+                <li className="offer__feature offer__feature--entire">{type}</li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  3 Bedrooms
+                  {bedrooms} {bedroomsTitle}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max 4 adults
+                  Max {maxAdults} {maxAdultsTitle}
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">€120</b>
+                <b className="offer__price-value">€{price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
-              <div className="offer__inside">
-                <h2 className="offer__inside-title">What&apos;s inside</h2>
-                <OfferInsideList />
-              </div>
+              {goods.length > 1 ?
+                <div className="offer__inside">
+                  <h2 className="offer__inside-title">What&apos;s inside</h2>
+                  <OfferInsideList goods={goods}/>
+                </div> :
+                ''}
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
-                  <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                  <div className={`offer__avatar-wrapper user__avatar-wrapper${isPro ? ' offer__avatar-wrapper--pro' : ''}`}>
                     <img
                       className="offer__avatar user__avatar"
-                      src="img/avatar-angelina.jpg"
+                      src={avatarUrl}
                       width={74}
                       height={74}
                       alt="Host avatar"
                     />
                   </div>
-                  <span className="offer__user-name">Angelina</span>
-                  <span className="offer__user-status">Pro</span>
+                  <span className="offer__user-name">{hostName}</span>
+                  {isPro ? <span className="offer__user-status">Pro</span> : ''}
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                    A quiet cozy and picturesque that hides behind a a river by the
-                    unique lightness of Amsterdam. The building is green and from 18th
-                    century.
-                  </p>
-                  <p className="offer__text">
-                    An independent House, strategically located between Rembrand
-                    Square and National Opera, but where the bustle of the city comes
-                    to rest in this alley flowery and colorful.
+                    {description}
                   </p>
                 </div>
               </div>
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">
-                  Reviews · <span className="reviews__amount">1</span>
+                  Reviews · <span className="reviews__amount">{reviews.length}</span>
                 </h2>
                 <ReviewsList reviews={reviews}/>
                 <RatingForm />
