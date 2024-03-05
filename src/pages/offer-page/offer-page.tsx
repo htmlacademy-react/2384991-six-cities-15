@@ -7,15 +7,16 @@ import OfferImage from '../../components/ui/offer-image/offer-image.tsx';
 import OfferInsideList from '../../components/blocks/offer-inside-list/offer-inside-list.tsx';
 import ReviewsList from '../../components/blocks/reviews-list/reviews-list.tsx';
 import RatingForm from '../../components/blocks/rating-form/rating-form.tsx';
-import { Offer } from '../../types/types.ts';
+import { Offer, Review } from '../../types/types.ts';
 
 const offerImageId = createIdGenerator();
 
 type OfferPageProps = {
   offers: Offer[];
+  reviews: Review[];
 };
 
-function OfferPage({ offers }: OfferPageProps): JSX.Element {
+function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
   return(
     <>
       <Helmet>
@@ -102,7 +103,7 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
                 <h2 className="reviews__title">
                   Reviews · <span className="reviews__amount">1</span>
                 </h2>
-                <ReviewsList />
+                <ReviewsList reviews={reviews}/>
                 <RatingForm />
               </section>
             </div>

@@ -1,11 +1,11 @@
-export type CityLocation = {
+export type Location = {
   latitude: number;
   longitude: number;
   zoom: number;
 };
 
 export type CityLocations = {
-  [key: string]: CityLocation;
+  [key: string]: Location;
 };
 
 export type Offer = {
@@ -15,20 +15,25 @@ export type Offer = {
   price: number;
   city: {
     name: string;
-    location: {
-      latitude: number;
-      longitude: number;
-      zoom: number;
-    };
+    location?: Location;
   };
-  location: {
-    latitude: number;
-    longitude: number;
-    zoom: number;
-  };
+  location?: Location;
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
   previewImage: string;
 };
 
+type User = {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
+};
+
+export type Review = {
+  id: string;
+  date: string;
+  user: User;
+  comment: string;
+  rating: number;
+};

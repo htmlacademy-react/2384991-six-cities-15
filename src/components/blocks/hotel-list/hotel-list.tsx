@@ -17,12 +17,12 @@ function HotelList({ offers, imageWidth = 260, imageHeight = 200, baseClassName 
 
   return (
     <div className={classes.join(' ')}>
-      {offers.map(({ id, title, type, price, isFavorite, isPremium, previewImage, rating }) => (
+      {offers.map(({ id, title, type, price, isFavorite, isPremium, previewImage, rating, city }) => (
         <HotelCard
           key={id}
           imageWidth={imageWidth}
           imageHeight={imageHeight}
-          {...{title, type, price, isFavorite, isPremium, previewImage, baseClassName, id, rating}}
+          {...{title, type, price, isFavorite, isPremium, previewImage, baseClassName, id, rating, city}}
         />
       ))}
     </div>

@@ -1,18 +1,13 @@
 import { Link } from 'react-router-dom';
+import { Offer } from '../../../types/types.ts';
 
-type HotelCardProps = {
+type HotelCardAdditionalProps = {
   imageWidth: number;
   imageHeight: number;
   baseClassName?: string;
-  id: string;
-  title: string;
-  type: string;
-  price: number;
-  isFavorite: boolean;
-  isPremium: boolean;
-  previewImage: string;
-  rating: number;
 }
+
+type HotelCardProps = Offer & HotelCardAdditionalProps;
 
 function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, type, price, isFavorite, isPremium, previewImage, rating, id }: HotelCardProps): JSX.Element {
   return(
@@ -55,7 +50,7 @@ function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, t
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${rating * 20}%` }} />
+            <span style={{ width: `${rating * 20}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

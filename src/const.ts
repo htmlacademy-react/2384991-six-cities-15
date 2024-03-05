@@ -5,6 +5,7 @@ const MAX_PHOTO_COUNT = 20;
 const MAX_OFFER_IMAGE_COUNT = 6;
 const OFFER_COUNT = 8;
 const REVIEW_COUNT = 5;
+const AVATAR_URL = 'https://i.pravatar.cc/128';
 
 const Setting = {
   RentalsCount: 312,
@@ -61,4 +62,5 @@ export {
   OFFER_INSIDE_ITEMS,
   PLACES_OPTIONS,
   RATING_TITLES,
+  AVATAR_URL,
 };
