@@ -1,4 +1,4 @@
-import FavoritePlace from '../../ui/favorites-places/favorite-place';
+import FavoritePlace from '../../ui/favorites-place/favorite-place.tsx';
 import { Offer } from '../../../types/types.ts';
 
 type FavoritePlacesListProps = {

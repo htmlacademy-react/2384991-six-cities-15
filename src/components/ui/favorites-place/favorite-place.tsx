@@ -1,6 +1,6 @@
 import HotelList from '../../blocks/hotel-list/hotel-list.tsx';
-import Location from '../../ui/location/location.tsx';
-import { Offer } from '../../../const.ts';
+import Location from '../location/location.tsx';
+import { Offer } from '../../../types/types.ts';
 
 type FavoritePlaceProps = {
   city: string;

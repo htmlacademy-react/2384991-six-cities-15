@@ -1,4 +1,4 @@
-import { CityLocation } from '../types/types.ts';
+import { Location } from '../types/types.ts';
 
 const getRandomArrayElement = (items: string[]) => items[Math.floor(Math.random() * items.length)];
 
@@ -19,7 +19,7 @@ const getRandomRating = () => (Math.floor(Math.random() * 40) + 10) / 10;
 
 const getRandomFloat = (min: number, max: number, precision: number = 2): number => parseFloat((Math.random() * (max - min) + min).toFixed(precision));
 
-const generateHotelLocation = (cityLocation: CityLocation): CityLocation => {
+const generateHotelLocation = (cityLocation: Location): Location => {
   const latitudeOffset = getRandomFloat(-0.05, 0.05);
   const longitudeOffset = getRandomFloat(-0.05, 0.05);
 
