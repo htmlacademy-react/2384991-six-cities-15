@@ -1,16 +1,19 @@
 import { Helmet } from 'react-helmet-async';
+import { useParams } from 'react-router-dom';
+import { Offer, Review } from '../../types/types.ts';
 import { createIdGenerator } from '../../utils/common.ts';
+import { getAuthorizationStatus } from '../../utils/authorization-status.ts';
+import { AuthorizationStatus } from '../../const.ts';
 import HotelList from '../../components/blocks/hotel-list/hotel-list.tsx';
 import Map from '../../components/ui/map/map.tsx';
 import OfferImage from '../../components/ui/offer-image/offer-image.tsx';
 import OfferInsideList from '../../components/blocks/offer-inside-list/offer-inside-list.tsx';
 import ReviewsList from '../../components/blocks/reviews-list/reviews-list.tsx';
 import RatingForm from '../../components/blocks/rating-form/rating-form.tsx';
-import { Offer, Review } from '../../types/types.ts';
-import { useParams } from 'react-router-dom';
 import NotFoundPage from '../not-found-page/not-found-page.tsx';
 
 const offerImageId = createIdGenerator();
+const authorizationStatus = getAuthorizationStatus();
 
 type OfferPageProps = {
   offers: Offer[];
@@ -115,7 +118,7 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
                   Reviews · <span className="reviews__amount">{reviews.length}</span>
                 </h2>
                 <ReviewsList reviews={reviews}/>
-                <RatingForm />
+                { authorizationStatus === AuthorizationStatus.Auth ? <RatingForm /> : '' }
               </section>
             </div>
           </div>

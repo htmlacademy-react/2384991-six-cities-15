@@ -1,5 +1,7 @@
 const REVIEW_COUNT = 5;
 const AVATAR_URL = 'https://i.pravatar.cc/128';
+const MIN_REVIEW_LENGTH = 50;
+const MAX_REVIEW_LENGTH = 300;
 
 enum AppRoute {
   Root = '/',
@@ -31,4 +33,6 @@ export {
   PLACES_OPTIONS,
   RATING_TITLES,
   AVATAR_URL,
+  MIN_REVIEW_LENGTH,
+  MAX_REVIEW_LENGTH,
 };

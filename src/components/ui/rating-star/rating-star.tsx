@@ -2,9 +2,11 @@ type RatingStarProps = {
   id: string;
   ratingValue: number;
   title: string;
+  onChange: () => void;
+  checked: boolean;
 };
 
-function RatingStar({ id, ratingValue, title }: RatingStarProps): JSX.Element {
+function RatingStar({ id, ratingValue, title, onChange, checked }: RatingStarProps): JSX.Element {
   return (
     <>
       <input
@@ -13,6 +15,8 @@ function RatingStar({ id, ratingValue, title }: RatingStarProps): JSX.Element {
         defaultValue={ratingValue}
         id={id}
         type="radio"
+        onChange={onChange}
+        checked={checked}
       />
       <label
         htmlFor={id}

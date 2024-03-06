@@ -1,7 +1,21 @@
-import RatingStar from '../../ui/rating-star/rating-star';
-import { RATING_TITLES } from '../../../const';
+import { useState, ChangeEvent } from 'react';
+import { MAX_REVIEW_LENGTH, MIN_REVIEW_LENGTH, RATING_TITLES } from '../../../const.ts';
+import RatingStar from '../../ui/rating-star/rating-star.tsx';
+
 
 function RatingForm(): JSX.Element {
+  const [ review, setReview ] = useState<string>('');
+  const [ rating, setRating ] = useState<number>(0);
+
+  const isValid: boolean = review.length >= MIN_REVIEW_LENGTH && review.length <= MAX_REVIEW_LENGTH && rating !== 0;
+  const handleTextareaChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+    setReview(evt.target.value);
+  };
+
+  const handleRatingChange = (ratingValue: number) => {
+    setRating(ratingValue);
+  };
+
   return (
     <form className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">
@@ -16,6 +30,8 @@ function RatingForm(): JSX.Element {
               id={`${ratingValue}-stars`}
               ratingValue={ratingValue}
               title={title}
+              onChange={() => handleRatingChange(ratingValue)}
+              checked={rating === ratingValue}
             />
           );
         })}
@@ -25,19 +41,20 @@ function RatingForm(): JSX.Element {
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        defaultValue={''}
+        value={review}
+        onChange={handleTextareaChange}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set{' '}
           <span className="reviews__star">rating</span> and describe your
           stay with at least{' '}
-          <b className="reviews__text-amount">50 characters</b>.
+          <b className="reviews__text-amount">{MIN_REVIEW_LENGTH} characters</b>.
         </p>
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled
+          disabled={!isValid}
         >
           Submit
         </button>
