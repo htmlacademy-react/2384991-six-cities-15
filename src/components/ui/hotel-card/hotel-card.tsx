@@ -1,17 +1,24 @@
 import { Link } from 'react-router-dom';
-import { HotelСardOffers } from '../../../types/types.ts';
+import { HotelCardOffers } from '../../../types/types.ts';
 
 type HotelCardAdditionalProps = {
   imageWidth: number;
   imageHeight: number;
   baseClassName?: string;
+  onMouseOver: () => void;
+  onMouseLeave: () => void;
 }
 
-type HotelCardProps = HotelСardOffers & HotelCardAdditionalProps;
+type HotelCardProps = HotelCardOffers & HotelCardAdditionalProps;
 
-function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, type, price, isFavorite, isPremium, previewImage, rating, id }: HotelCardProps): JSX.Element {
+function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, type, price, isFavorite, isPremium, previewImage, rating, id, onMouseOver, onMouseLeave }: HotelCardProps): JSX.Element {
+
   return(
-    <article className={`${baseClassName}__card place-card`}>
+    <article
+      className={`${baseClassName}__card place-card`}
+      onMouseOver={onMouseOver}
+      onMouseLeave={onMouseLeave}
+    >
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>

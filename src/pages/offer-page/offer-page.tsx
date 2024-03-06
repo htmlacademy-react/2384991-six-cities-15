@@ -50,11 +50,10 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              {isPremium ?
+              {isPremium &&
                 <div className="offer__mark">
                   <span>Premium</span>
-                </div> :
-                ''}
+                </div>}
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
                   {title}

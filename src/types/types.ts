@@ -36,7 +36,7 @@ export type Offer = {
   maxAdults: number;
 };
 
-export type HotelСardOffers = Omit<Offer, 'description' | 'goods' | 'host' | 'images'>;
+export type HotelCardOffers = Omit<Offer, 'description' | 'goods' | 'host' | 'images'>;
 
 type User = {
   name: string;
