@@ -1,5 +1,5 @@
 import { HotelCardOffers } from '../../../types/types.ts';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Nullable } from 'vitest';
 import HotelCard from '../../ui/hotel-card/hotel-card.tsx';
 
@@ -16,13 +16,14 @@ function HotelList({ offers, imageWidth = 260, imageHeight = 200, baseClassName 
   if (className === 'cities__places-list') {
     classes.push('tabs__content');
   }
-  // отключила линтер для данной строки т.к. activeOffer до задания с картой пока нигде не используется.
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const [ activeOffer, setActiveOffer ] = useState<Nullable<HotelCardOffers>>(null);
 
   const handleHover = (offer?: HotelCardOffers) => {
     setActiveOffer(offer || null);
   };
+
+  useEffect(() => {}, [activeOffer]);
 
   return (
     <div className={classes.join(' ')}>
