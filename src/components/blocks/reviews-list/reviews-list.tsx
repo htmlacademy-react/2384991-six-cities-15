@@ -1,15 +1,18 @@
 import ReviewsItem from '../../ui/review-item/reviews-item';
-import { REVIEW_COUNT } from '../../../const';
-import { getRandomInteger, createIdGenerator } from '../../../utils/common';
+import { Review } from '../../../types/types.ts';
 
-const reviewId = createIdGenerator();
-const reviewsCount = getRandomInteger(REVIEW_COUNT);
+type ReviewsListProps = {
+  reviews: Review[];
+}
 
-function ReviewsList(): JSX.Element {
-  return(
+function ReviewsList({ reviews }: ReviewsListProps): JSX.Element {
+  return (
     <ul className="reviews__list">
-      {Array.from({ length: reviewsCount }).map(() => (
-        <ReviewsItem key={reviewId()}/>
+      {reviews.map(({ id, date, user, comment, rating }) => (
+        <ReviewsItem
+          key={id}
+          {...{id, date, user, comment, rating}}
+        />
       ))}
     </ul>
   );

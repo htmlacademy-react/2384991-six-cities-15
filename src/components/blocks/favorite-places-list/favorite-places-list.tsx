@@ -1,6 +1,9 @@
-import FavoritePlace from '../../ui/favorites-places/favorite-place';
-import { hotelOffers } from '../../../mocks/mocks.ts';
-import { Offer } from '../../../const';
+import FavoritePlace from '../../ui/favorites-place/favorite-place.tsx';
+import { Offer } from '../../../types/types.ts';
+
+type FavoritePlacesListProps = {
+  offers: Offer[];
+};
 
 const groupOffersByCity = (offers: Offer[]) => offers.reduce((accumulator: Record<string, Offer[]>, offer) => {
   const cityName = offer.city.name;
@@ -11,14 +14,14 @@ const groupOffersByCity = (offers: Offer[]) => offers.reduce((accumulator: Recor
   return accumulator;
 }, {} as Record<string, Offer[]>);
 
-function FavoritePlacesList(): JSX.Element {
-  const favoriteOffers = hotelOffers.filter((offer) => offer.isFavorite);
+function FavoritePlacesList({ offers }: FavoritePlacesListProps): JSX.Element {
+  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
   const groupedOffers = groupOffersByCity(favoriteOffers);
 
   return(
     <ul className="favorites__list">
-      {Object.entries(groupedOffers).map(([city, offers]) => (
-        <FavoritePlace key={city} city={city} offers={offers} />
+      {Object.entries(groupedOffers).map(([city, cityOffers]) => (
+        <FavoritePlace key={city} city={city} offers={cityOffers} />
       ))}
     </ul>
   );

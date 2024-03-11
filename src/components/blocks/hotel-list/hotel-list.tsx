@@ -1,8 +1,10 @@
+import { HotelCardOffers } from '../../../types/types.ts';
+import { useEffect, useState } from 'react';
+import { Nullable } from 'vitest';
 import HotelCard from '../../ui/hotel-card/hotel-card.tsx';
-import { hotelOffers } from '../../../mocks/mocks.ts';
 
 type HotelListProps = {
-  offers: typeof hotelOffers;
+  offers: HotelCardOffers[];
   baseClassName?: string;
   className?: string;
   imageWidth?: number;
@@ -15,25 +17,29 @@ function HotelList({ offers, imageWidth = 260, imageHeight = 200, baseClassName 
     classes.push('tabs__content');
   }
 
+  const [ activeOffer, setActiveOffer ] = useState<Nullable<HotelCardOffers>>(null);
+
+  const handleHover = (offer?: HotelCardOffers) => {
+    setActiveOffer(offer || null);
+  };
+
+  useEffect(() => {}, [activeOffer]);
+
   return (
     <div className={classes.join(' ')}>
-      {offers && offers.map(({ id, title, type, price, isFavorite, isPremium, previewImage }) => (
+      {offers.map((offer) => (
         <HotelCard
-          key={id}
+          key={offer.id}
           imageWidth={imageWidth}
           imageHeight={imageHeight}
-          title={title}
-          type={type}
-          price={price}
-          isFavorite={isFavorite}
-          isPremium={isPremium}
-          previewImage={previewImage}
           baseClassName={baseClassName}
+          {...offer}
+          onMouseOver={() => handleHover(offer)}
+          onMouseLeave={() => handleHover()}
         />
       ))}
     </div>
   );
 }
-
 
 export default HotelList;

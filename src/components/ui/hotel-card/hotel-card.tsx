@@ -1,28 +1,31 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../../const.ts';
+import { HotelCardOffers } from '../../../types/types.ts';
 
-type HotelCardProps = {
+type HotelCardAdditionalProps = {
   imageWidth: number;
   imageHeight: number;
   baseClassName?: string;
-  title: string;
-  type: string;
-  price: number;
-  isFavorite: boolean;
-  isPremium: boolean;
-  previewImage: string;
+  onMouseOver: () => void;
+  onMouseLeave: () => void;
 }
 
-function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, type, price, isFavorite, isPremium, previewImage }: HotelCardProps): JSX.Element {
+type HotelCardProps = HotelCardOffers & HotelCardAdditionalProps;
+
+function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, type, price, isFavorite, isPremium, previewImage, rating, id, onMouseOver, onMouseLeave }: HotelCardProps): JSX.Element {
+
   return(
-    <article className={`${baseClassName}__card place-card`}>
+    <article
+      className={`${baseClassName}__card place-card`}
+      onMouseOver={onMouseOver}
+      onMouseLeave={onMouseLeave}
+    >
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
       <div className={`${baseClassName}__image-wrapper place-card__image-wrapper`}>
-        <Link to={ AppRoute.Offer }>
+        <Link to={ `/offer/${id}` }>
           <img
             className="place-card__image"
             src={previewImage}
@@ -49,17 +52,17 @@ function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, t
             >
               <use xlinkHref="#icon-bookmark" />
             </svg>
-            <span className="visually-hidden">In bookmarks</span>
+            <span className="visually-hidden">{isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
           </button>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '80%' }} />
+            <span style={{ width: `${rating * 20}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={ AppRoute.Offer }>{title}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
