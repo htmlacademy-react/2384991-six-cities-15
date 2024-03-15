@@ -30,6 +30,12 @@ function Map({baseClassName = 'cities', city, offers, activeOffer}: MapProps): J
   const map = useMap({ mapRef, city });
 
   useEffect(() => {
+    if (map) {
+      map.setView([city.latitude, city.longitude], city.zoom);
+    }
+  }, [city, map]);
+
+  useEffect(() => {
     if (map && offers) {
       offers.forEach((offer) => {
         if (offer.location) {

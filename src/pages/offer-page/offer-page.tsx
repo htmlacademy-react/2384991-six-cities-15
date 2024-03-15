@@ -36,6 +36,9 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
   const bedroomsTitle = `${bedrooms > 1 ? 'bedrooms' : 'bedroom'}`;
   const maxAdultsTitle = `${maxAdults > 1 ? 'adults' : 'adult'}`;
 
+  const MAX_NEARBY_OFFERS_COUNT = 3;
+  const nearbyOffers = offers.slice(0, MAX_NEARBY_OFFERS_COUNT);
+
   return(
     <>
       <Helmet>
@@ -128,7 +131,7 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighborhood</h2>
-            <HotelList offers={offers} baseClassName="near-places" className="near-places__list"/>
+            <HotelList offers={nearbyOffers} baseClassName="near-places" className="near-places__list"/>
           </section>
         </div>
       </main>

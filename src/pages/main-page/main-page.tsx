@@ -13,13 +13,18 @@ type MainPageProps = {
 
 function MainPage({ offers }: MainPageProps): JSX.Element {
   const [activeOffer, setActiveOffer] = useState<Offer | null>(null);
+  const [ selectedCity, setSelectedCity ] = useState('Amsterdam');
 
   const handleHover = (offer?: Offer) => {
     setActiveOffer(offer || null);
   };
 
-  const placesTitle = offers.length === 1 ? 'place' : 'places';
-  const selectedCity = CITY_LOCATIONS['Amsterdam'];
+  const handleCityClick = (city: string) => {
+    setSelectedCity(city);
+  };
+
+  const filteredOffers = offers.filter((offer) => offer.city.name === selectedCity);
+  const placesTitle = filteredOffers.length === 1 ? 'place' : 'places';
 
   return(
     <>
@@ -30,19 +35,19 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <LocationList />
+            <LocationList selectedCity={selectedCity} onCityClick={handleCityClick}/>
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{offers.length} {placesTitle} to stay in Amsterdam</b>
+              <b className="places__found">{filteredOffers.length} {placesTitle} to stay in {selectedCity}</b>
               <SortingForm width={7} height={4} />
-              <HotelList offers={offers} onHover={handleHover} />
+              <HotelList offers={filteredOffers} onHover={handleHover} />
             </section>
             <div className="cities__right-section">
-              <Map city={selectedCity} offers={offers} activeOffer={activeOffer} />
+              <Map city={CITY_LOCATIONS[selectedCity]} offers={offers} activeOffer={activeOffer} />
             </div>
           </div>
         </div>

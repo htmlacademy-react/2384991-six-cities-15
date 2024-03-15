@@ -6,7 +6,7 @@ import { AVATAR_URL, TYPES } from '../const.ts';
 const MAX_PRICE_VALUE = 200;
 
 const MAX_BEDROOMS = 5;
-const OFFER_COUNT = 20;
+const OFFER_COUNT = 30;
 const MAX_OFFER_IMAGE_COUNT = 6;
 const MAX_PHOTO_COUNT = 20;
 
