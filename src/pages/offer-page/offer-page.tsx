@@ -11,6 +11,7 @@ import OfferInsideList from '../../components/blocks/offer-inside-list/offer-ins
 import ReviewsList from '../../components/blocks/reviews-list/reviews-list.tsx';
 import RatingForm from '../../components/blocks/rating-form/rating-form.tsx';
 import NotFoundPage from '../not-found-page/not-found-page.tsx';
+import { CITY_LOCATIONS } from '../../mocks/offers.ts';
 
 const offerImageId = createIdGenerator();
 const authorizationStatus = getAuthorizationStatus();
@@ -23,6 +24,7 @@ type OfferPageProps = {
 function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
   const { id } = useParams();
   const currentOffer: Offer | undefined = offers.find((offer: Offer) => offer.id === id);
+  const selectedCity = CITY_LOCATIONS['Amsterdam'];
 
   if (!currentOffer) {
     return <NotFoundPage />;
@@ -121,7 +123,7 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
               </section>
             </div>
           </div>
-          <Map baseClassName='offer' />
+          <Map city={selectedCity} offers={offers} baseClassName='offer' />
         </section>
         <div className="container">
           <section className="near-places places">

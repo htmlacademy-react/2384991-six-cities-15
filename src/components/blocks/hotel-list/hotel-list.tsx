@@ -7,7 +7,7 @@ type HotelListProps = {
   className?: string;
   imageWidth?: number;
   imageHeight?: number;
-  onHover: (offer?: Offer) => void;
+  onHover?: (offer?: Offer) => void;
 };
 
 function HotelList({ offers, imageWidth = 260, imageHeight = 200, baseClassName = 'cities', className = 'cities__places-list', onHover }: HotelListProps): JSX.Element {
@@ -15,6 +15,18 @@ function HotelList({ offers, imageWidth = 260, imageHeight = 200, baseClassName 
   if (className === 'cities__places-list') {
     classes.push('tabs__content');
   }
+
+  const handleMouseEnter = (offer: Offer) => {
+    if (onHover) {
+      onHover(offer);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (onHover) {
+      onHover();
+    }
+  };
 
   return (
     <div className={classes.join(' ')}>
@@ -25,8 +37,8 @@ function HotelList({ offers, imageWidth = 260, imageHeight = 200, baseClassName 
           imageHeight={imageHeight}
           baseClassName={baseClassName}
           {...offer}
-          onMouseOver={() => onHover(offer)}
-          onMouseLeave={() => onHover()}
+          onMouseOver={() => handleMouseEnter(offer)}
+          onMouseLeave={() => handleMouseLeave()}
         />
       ))}
     </div>

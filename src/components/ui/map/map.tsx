@@ -9,8 +9,8 @@ import useMap from '../../../hooks/use-map/use-map.ts';
 type MapProps = {
   baseClassName?: string;
   city: Location;
-  offers: Offer[];
-  activeOffer: Offer | null;
+  offers?: Offer[];
+  activeOffer?: Offer | null;
 }
 
 const defaultCustomIcon = leaflet.icon({
@@ -30,7 +30,7 @@ function Map({baseClassName = 'cities', city, offers, activeOffer}: MapProps): J
   const map = useMap({ mapRef, city });
 
   useEffect(() => {
-    if (map) {
+    if (map && offers) {
       offers.forEach((offer) => {
         if (offer.location) {
           leaflet.marker({
