@@ -1,5 +1,5 @@
 import HotelList from '../../blocks/hotel-list/hotel-list.tsx';
-import Location from '../location/location.tsx';
+import Location from '../location-item/location-item.tsx';
 import { Offer } from '../../../types/types.ts';
 
 type FavoritePlaceProps = {

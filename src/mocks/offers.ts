@@ -1,12 +1,12 @@
 import { getRandomArrayElement, getRandomInteger, getRandomBoolean, createIdGenerator, getRandomRating, generateHotelLocation } from '../utils/common.ts';
 import { Offer, Host } from '../types/types.ts';
-import { CityLocations } from '../types/types.ts';
+import { CityLocations, Location } from '../types/types.ts';
 import { AVATAR_URL, TYPES } from '../const.ts';
 
 const MAX_PRICE_VALUE = 200;
 
 const MAX_BEDROOMS = 5;
-const OFFER_COUNT = 8;
+const OFFER_COUNT = 20;
 const MAX_OFFER_IMAGE_COUNT = 6;
 const MAX_PHOTO_COUNT = 20;
 
@@ -29,6 +29,13 @@ const CITY_LOCATIONS: CityLocations = {
   Hamburg: { latitude: 53.550341, longitude: 10.000654, zoom: 13 },
   Dusseldorf: { latitude: 51.225402, longitude: 6.776314, zoom: 13 },
 };
+
+const AMSTERDAM_HOTEL_LOCATIONS = [
+  { latitude: 52.3909553943508, longitude: 4.85309666406198, zoom: 8 },
+  { latitude: 52.3609553943508, longitude: 4.85309666406198, zoom: 8 },
+  { latitude: 52.3909553943508, longitude: 4.929309666406198, zoom: 8 },
+  { latitude: 52.3809553943508, longitude: 4.939309666406198, zoom: 8 },
+];
 
 const HOSTS: Host[] = [
   {
@@ -60,9 +67,6 @@ const HOSTS: Host[] = [
 
 const offersId = createIdGenerator();
 
-/*
-images?: string[];*/
-
 const getRandomGoods = (items: string[]): string[] => {
   const maxGoods = items.length;
   const randomCount = Math.floor(Math.random() * maxGoods) + 1;
@@ -81,7 +85,7 @@ const getRandomMockOffers = ():Offer => {
 
   const cityLocation = CITY_LOCATIONS[randomCity];
 
-  const hotelLocation = generateHotelLocation(cityLocation);
+  const hotelLocation: Location = generateHotelLocation(cityLocation);
 
   const randomRating = getRandomRating();
 
@@ -123,4 +127,4 @@ const getRandomMockOffers = ():Offer => {
 
 const hotelOffers = Array.from({length: getRandomInteger(OFFER_COUNT)}, getRandomMockOffers);
 
-export { hotelOffers };
+export { hotelOffers, CITY_LOCATIONS, AMSTERDAM_HOTEL_LOCATIONS };
