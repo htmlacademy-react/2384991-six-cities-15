@@ -4,6 +4,7 @@ import { Offer, Review } from '../../types/types.ts';
 import { createIdGenerator } from '../../utils/common.ts';
 import { getAuthorizationStatus } from '../../utils/authorization-status.ts';
 import { AuthorizationStatus } from '../../const.ts';
+import { CITY_LOCATIONS } from '../../mocks/offers.ts';
 import HotelList from '../../components/blocks/hotel-list/hotel-list.tsx';
 import Map from '../../components/ui/map/map.tsx';
 import OfferImage from '../../components/ui/offer-image/offer-image.tsx';
@@ -18,15 +19,20 @@ const authorizationStatus = getAuthorizationStatus();
 type OfferPageProps = {
   offers: Offer[];
   reviews: Review[];
+  selectedCity: string;
 };
 
-function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
+function OfferPage({ offers, reviews, selectedCity }: OfferPageProps): JSX.Element {
   const { id } = useParams();
+  const filteredOffers = offers.filter((offer) => offer.city.name === selectedCity);
   const currentOffer: Offer | undefined = offers.find((offer: Offer) => offer.id === id);
 
   if (!currentOffer) {
     return <NotFoundPage />;
   }
+
+  const MAX_NEARBY_OFFERS_COUNT = 3;
+  const nearbyOffers = filteredOffers.filter((offer) => offer.id !== currentOffer.id).slice(0, MAX_NEARBY_OFFERS_COUNT);
 
   const { title, price, type, rating, isPremium, isFavorite, bedrooms, maxAdults, goods, description, host, images } = currentOffer;
   const { name: hostName, avatarUrl, isPro } = host;
@@ -121,17 +127,16 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
               </section>
             </div>
           </div>
-          <Map baseClassName='offer' />
+          <Map city={CITY_LOCATIONS[selectedCity]} offers={[...nearbyOffers, currentOffer]} activeOffer={currentOffer} baseClassName='offer' />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighborhood</h2>
-            <HotelList offers={offers} baseClassName="near-places" className="near-places__list"/>
+            <HotelList offers={nearbyOffers} baseClassName="near-places" className="near-places__list"/>
           </section>
         </div>
       </main>
     </>
-
   );
 }
 
