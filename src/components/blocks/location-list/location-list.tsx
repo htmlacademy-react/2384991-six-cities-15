@@ -1,4 +1,4 @@
-import LocationItem from '../../ui/location-item/location-item.tsx';
+import LocationItem from '../../ui/location/location.tsx';
 import { CITIES } from '../../../const.ts';
 
 type LocationListProps = {
@@ -6,7 +6,7 @@ type LocationListProps = {
   onCityClick: (city: string) => void;
 }
 
-function LocationList({ onCityClick, selectedCity }: LocationListProps): JSX.Element {
+function LocationList({ selectedCity, onCityClick }: LocationListProps): JSX.Element {
 
   return(
     <ul className="locations__list tabs__list">

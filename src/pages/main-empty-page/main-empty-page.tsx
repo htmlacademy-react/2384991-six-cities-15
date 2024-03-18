@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async';
-import LocationList from '../../components/blocks/location-list/location-list';
 
 function MainEmptyPage(): JSX.Element {
   return(
@@ -11,7 +10,7 @@ function MainEmptyPage(): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <LocationList />
+            {/* <LocationList /> */}
           </section>
         </div>
         <div className="cities">

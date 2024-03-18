@@ -4,8 +4,8 @@ import { AppRoute } from '../../../const';
 type LocationProps = {
   city: string;
   isFavoritePage: boolean;
-  isActive: boolean;
-  onClick: (city: string) => void;
+  isActive?: boolean;
+  onClick?: (city: string) => void | undefined;
 }
 
 function Location({city, isFavoritePage, isActive, onClick}: LocationProps): JSX.Element {
@@ -15,10 +15,16 @@ function Location({city, isFavoritePage, isActive, onClick}: LocationProps): JSX
     </Link>
   );
 
+  const handleOnClick = () => {
+    if (onClick) {
+      onClick(city);
+    }
+  };
+
   return isFavoritePage ? (
-    <div className="locations__item">{content}</div>
+    <div className="locations__item" onClick={handleOnClick}>{content}</div>
   ) : (
-    <li className="locations__item" onClick={() => onClick(city)}>{content}</li>
+    <li className="locations__item" onClick={handleOnClick}>{content}</li>
   );
 }
 

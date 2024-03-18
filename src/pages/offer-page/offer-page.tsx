@@ -4,6 +4,7 @@ import { Offer, Review } from '../../types/types.ts';
 import { createIdGenerator } from '../../utils/common.ts';
 import { getAuthorizationStatus } from '../../utils/authorization-status.ts';
 import { AuthorizationStatus } from '../../const.ts';
+import { CITY_LOCATIONS } from '../../mocks/offers.ts';
 import HotelList from '../../components/blocks/hotel-list/hotel-list.tsx';
 import Map from '../../components/ui/map/map.tsx';
 import OfferImage from '../../components/ui/offer-image/offer-image.tsx';
@@ -11,7 +12,6 @@ import OfferInsideList from '../../components/blocks/offer-inside-list/offer-ins
 import ReviewsList from '../../components/blocks/reviews-list/reviews-list.tsx';
 import RatingForm from '../../components/blocks/rating-form/rating-form.tsx';
 import NotFoundPage from '../not-found-page/not-found-page.tsx';
-import { CITY_LOCATIONS } from '../../mocks/offers.ts';
 
 const offerImageId = createIdGenerator();
 const authorizationStatus = getAuthorizationStatus();
@@ -19,25 +19,26 @@ const authorizationStatus = getAuthorizationStatus();
 type OfferPageProps = {
   offers: Offer[];
   reviews: Review[];
+  selectedCity: string;
 };
 
-function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
+function OfferPage({ offers, reviews, selectedCity }: OfferPageProps): JSX.Element {
   const { id } = useParams();
+  const filteredOffers = offers.filter((offer) => offer.city.name === selectedCity);
   const currentOffer: Offer | undefined = offers.find((offer: Offer) => offer.id === id);
-  const selectedCity = CITY_LOCATIONS['Amsterdam'];
 
   if (!currentOffer) {
     return <NotFoundPage />;
   }
+
+  const MAX_NEARBY_OFFERS_COUNT = 3;
+  const nearbyOffers = filteredOffers.filter((offer) => offer.id !== currentOffer.id).slice(0, MAX_NEARBY_OFFERS_COUNT);
 
   const { title, price, type, rating, isPremium, isFavorite, bedrooms, maxAdults, goods, description, host, images } = currentOffer;
   const { name: hostName, avatarUrl, isPro } = host;
 
   const bedroomsTitle = `${bedrooms > 1 ? 'bedrooms' : 'bedroom'}`;
   const maxAdultsTitle = `${maxAdults > 1 ? 'adults' : 'adult'}`;
-
-  const MAX_NEARBY_OFFERS_COUNT = 3;
-  const nearbyOffers = offers.slice(0, MAX_NEARBY_OFFERS_COUNT);
 
   return(
     <>
@@ -126,7 +127,7 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
               </section>
             </div>
           </div>
-          <Map city={selectedCity} offers={offers} baseClassName='offer' />
+          <Map city={CITY_LOCATIONS[selectedCity]} offers={[...nearbyOffers, currentOffer]} activeOffer={currentOffer} baseClassName='offer' />
         </section>
         <div className="container">
           <section className="near-places places">
@@ -136,7 +137,6 @@ function OfferPage({ offers, reviews }: OfferPageProps): JSX.Element {
         </div>
       </main>
     </>
-
   );
 }
 

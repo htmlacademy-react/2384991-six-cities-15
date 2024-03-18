@@ -4,9 +4,10 @@ import { Offer } from '../../types/types.ts';
 
 type FavoritesPageProps = {
   offers: Offer[];
+  onCityClick: (city: string) => void;
 }
 
-function FavoritesPage({ offers }: FavoritesPageProps): JSX.Element {
+function FavoritesPage({ offers, onCityClick }: FavoritesPageProps): JSX.Element {
   return(
     <>
       <Helmet>
@@ -16,7 +17,7 @@ function FavoritesPage({ offers }: FavoritesPageProps): JSX.Element {
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
-            <FavoritePlacesList offers={offers} />
+            <FavoritePlacesList offers={offers} onCityClick={onCityClick}/>
           </section>
         </div>
       </main>
