@@ -11,12 +11,12 @@ function Layout(): JSX.Element {
   const authorizationStatus = getAuthorizationStatus();
 
   return(
-    <div className={`page ${rootClassName}`}>
+    <div className={rootClassName}>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <Link className={`header__logo-link ${linkClassName}`} to={ AppRoute.Root }>
+              <Link className={linkClassName} to={ AppRoute.Root }>
                 <Logo width={81} height={41}/>
               </Link>
             </div>
