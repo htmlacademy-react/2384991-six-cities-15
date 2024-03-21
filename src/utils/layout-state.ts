@@ -1,24 +1,25 @@
+import classNames from 'classnames';
 import { AppRoute } from '../const.ts';
 
 const getLayoutState = (pathname: AppRoute) => {
-  let rootClassName = '';
-  let linkClassName = '';
-  let shouldRenderUser = true;
+  const isRoot = pathname === AppRoute.Root;
+  const isLogin = pathname === AppRoute.Login;
   const isKnownRoute = Object.values(AppRoute).some((route) =>
     route === pathname ||
     (route.includes(':id') && pathname.startsWith(route.split('/:id')[0]))
   );
 
-  if (pathname === AppRoute.Root) {
-    rootClassName = ' page--gray page--main';
-    linkClassName = ' header__logo-link--active';
-  } else if (pathname === AppRoute.Login) {
-    rootClassName = ' page--gray page--login';
-    shouldRenderUser = false;
-  } else if (!isKnownRoute) {
-    rootClassName = ' page--main';
-    linkClassName = 'header__logo-link--active';
-  }
+  const rootClassName = classNames('page', {
+    'page--main': isRoot || !isKnownRoute,
+    'page--gray': isRoot || isLogin,
+    'page--login': isLogin,
+  });
+
+  const linkClassName = classNames('header__logo-link', {
+    'header__logo-link--active': isRoot || !isKnownRoute,
+  });
+
+  const shouldRenderUser = !isLogin;
 
   return {rootClassName, linkClassName, shouldRenderUser };
 };
