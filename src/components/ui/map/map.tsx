@@ -3,7 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import { useRef, useEffect } from 'react';
 import { Offer, Location } from '../../../types/types.ts';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../../../const.ts';
-import useMap from '../../../hooks/use-map/use-map.ts';
+import useMap from '../../../hooks/use-map.ts';
 
 
 type MapProps = {

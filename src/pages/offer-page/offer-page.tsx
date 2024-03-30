@@ -4,7 +4,8 @@ import { Offer, Review } from '../../types/types.ts';
 import { createIdGenerator } from '../../utils/common.ts';
 import { getAuthorizationStatus } from '../../utils/authorization-status.ts';
 import { AuthorizationStatus } from '../../const.ts';
-import { CITY_LOCATIONS } from '../../mocks/offers.ts';
+import { useAppSelector } from '../../hooks/index.ts';
+import { CITY_LOCATIONS } from '../../const.ts';
 import HotelList from '../../components/blocks/hotel-list/hotel-list.tsx';
 import Map from '../../components/ui/map/map.tsx';
 import OfferImage from '../../components/ui/offer-image/offer-image.tsx';
@@ -12,27 +13,33 @@ import OfferInsideList from '../../components/blocks/offer-inside-list/offer-ins
 import ReviewsList from '../../components/blocks/reviews-list/reviews-list.tsx';
 import RatingForm from '../../components/blocks/rating-form/rating-form.tsx';
 import NotFoundPage from '../not-found-page/not-found-page.tsx';
+import { selectCity, selectOffers } from '../../store/selectors.ts';
 
 const offerImageId = createIdGenerator();
 const authorizationStatus = getAuthorizationStatus();
 
 type OfferPageProps = {
-  offers: Offer[];
   reviews: Review[];
-  selectedCity: string;
 };
 
-function OfferPage({ offers, reviews, selectedCity }: OfferPageProps): JSX.Element {
+function OfferPage({ reviews }: OfferPageProps): JSX.Element {
   const { id } = useParams();
-  const filteredOffers = offers.filter((offer) => offer.city.name === selectedCity);
-  const currentOffer: Offer | undefined = offers.find((offer: Offer) => offer.id === id);
+  const selectedCity = useAppSelector(selectCity);
+  const offers = useAppSelector(selectOffers);
 
+  const currentOffer: Offer | undefined = offers.find((offer) => offer.id === id);
   if (!currentOffer) {
     return <NotFoundPage />;
   }
 
+  const cityInfo = CITY_LOCATIONS.find((city) => city.name === currentOffer.city.name);
+
+  if (!cityInfo) {
+    return <div>City information is missing</div>;
+  }
+
   const MAX_NEARBY_OFFERS_COUNT = 3;
-  const nearbyOffers = filteredOffers.filter((offer) => offer.id !== currentOffer.id).slice(0, MAX_NEARBY_OFFERS_COUNT);
+  const nearbyOffers = offers.filter((offer) => offer.city.name === selectedCity && offer.id !== currentOffer.id).slice(0, MAX_NEARBY_OFFERS_COUNT);
 
   const { title, price, type, rating, isPremium, isFavorite, bedrooms, maxAdults, goods, description, host, images } = currentOffer;
   const { name: hostName, avatarUrl, isPro } = host;
@@ -127,7 +134,7 @@ function OfferPage({ offers, reviews, selectedCity }: OfferPageProps): JSX.Eleme
               </section>
             </div>
           </div>
-          <Map city={CITY_LOCATIONS[selectedCity]} offers={[...nearbyOffers, currentOffer]} activeOffer={currentOffer} baseClassName='offer' />
+          <Map city={cityInfo.location} offers={[...nearbyOffers, currentOffer]} activeOffer={currentOffer} baseClassName="offer" />
         </section>
         <div className="container">
           <section className="near-places places">

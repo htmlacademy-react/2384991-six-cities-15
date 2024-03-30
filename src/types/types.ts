@@ -9,9 +9,13 @@ export type City = {
   location?: Location;
 }
 
-export type CityLocations = {
-  [key: string]: Location;
+export type CityLocation = {
+  id: string;
+  location: Location;
+  name: string;
 };
+
+export type CityLocationsArray = CityLocation[];
 
 export type Host = {
   name: string;

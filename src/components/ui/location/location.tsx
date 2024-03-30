@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../../const';
+import { useAppDispatch } from '../../../hooks';
+import { setCity } from '../../../store/action';
 
 type LocationProps = {
   city: string;
@@ -9,6 +11,8 @@ type LocationProps = {
 }
 
 function Location({city, isFavoritePage, isActive, onClick}: LocationProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const content = (
     <Link className={`locations__item-link tabs__item ${isActive ? 'tabs__item--active' : ''}`} to={ AppRoute.Root }>
       <span>{city}</span>
@@ -16,6 +20,7 @@ function Location({city, isFavoritePage, isActive, onClick}: LocationProps): JSX
   );
 
   const handleOnClick = () => {
+    dispatch(setCity(city));
     if (onClick) {
       onClick(city);
     }

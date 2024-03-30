@@ -1,10 +1,9 @@
 import { getRandomArrayElement, getRandomInteger, getRandomBoolean, createIdGenerator, getRandomRating, generateHotelLocation } from '../utils/common.ts';
 import { Offer, Host } from '../types/types.ts';
-import { CityLocations, Location } from '../types/types.ts';
-import { AVATAR_URL, TYPES } from '../const.ts';
+import { Location } from '../types/types.ts';
+import { AVATAR_URL, TYPES, CITY_LOCATIONS } from '../const.ts';
 
 const MAX_PRICE_VALUE = 200;
-
 const MAX_BEDROOMS = 5;
 const OFFER_COUNT = 50;
 const MAX_OFFER_IMAGE_COUNT = 6;
@@ -19,22 +18,6 @@ const DESCRIPTIONS = [
   ' located in a serene neighborhood, offering peace and tranquility away from the hustle and bustle of the city center.',
   ' with a lovely view of the surroundings, perfect for solo travelers or couples looking for a romantic getaway.',
   ' in a historic building, blending classic architecture with modern comforts for an unforgettable experience.'
-];
-
-const CITY_LOCATIONS: CityLocations = {
-  Paris: { latitude: 48.85661, longitude: 2.351499, zoom: 13 },
-  Cologne: { latitude: 50.938361, longitude: 6.959974, zoom: 13 },
-  Brussels: { latitude: 50.846557, longitude: 4.351697, zoom: 13 },
-  Amsterdam: { latitude: 52.37454, longitude: 4.897976, zoom: 13 },
-  Hamburg: { latitude: 53.550341, longitude: 10.000654, zoom: 13 },
-  Dusseldorf: { latitude: 51.225402, longitude: 6.776314, zoom: 13 },
-};
-
-const AMSTERDAM_HOTEL_LOCATIONS = [
-  { latitude: 52.3909553943508, longitude: 4.85309666406198, zoom: 8 },
-  { latitude: 52.3609553943508, longitude: 4.85309666406198, zoom: 8 },
-  { latitude: 52.3909553943508, longitude: 4.929309666406198, zoom: 8 },
-  { latitude: 52.3809553943508, longitude: 4.939309666406198, zoom: 8 },
 ];
 
 const HOSTS: Host[] = [
@@ -81,9 +64,11 @@ const getRandomMockOffers = ():Offer => {
 
   const randomTitle = getRandomArrayElement(TITLES);
 
-  const randomCity = getRandomArrayElement(Object.keys(CITY_LOCATIONS));
+  const randomCityObject = getRandomArrayElement(CITY_LOCATIONS);
 
-  const cityLocation = CITY_LOCATIONS[randomCity];
+  const randomCity = randomCityObject.name;
+
+  const cityLocation = randomCityObject.location;
 
   const hotelLocation: Location = generateHotelLocation(cityLocation);
 
@@ -127,4 +112,4 @@ const getRandomMockOffers = ():Offer => {
 
 const hotelOffers = Array.from({length: getRandomInteger(OFFER_COUNT)}, getRandomMockOffers);
 
-export { hotelOffers, CITY_LOCATIONS, AMSTERDAM_HOTEL_LOCATIONS };
+export { hotelOffers };

@@ -3,7 +3,6 @@ import { Offer } from '../../../types/types.ts';
 
 type FavoritePlacesListProps = {
   offers: Offer[];
-  onCityClick: (city: string) => void;
 };
 
 const groupOffersByCity = (offers: Offer[]) => offers.reduce((accumulator: Record<string, Offer[]>, offer) => {
@@ -15,14 +14,14 @@ const groupOffersByCity = (offers: Offer[]) => offers.reduce((accumulator: Recor
   return accumulator;
 }, {} as Record<string, Offer[]>);
 
-function FavoritePlacesList({ offers, onCityClick }: FavoritePlacesListProps): JSX.Element {
+function FavoritePlacesList({ offers }: FavoritePlacesListProps): JSX.Element {
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
   const groupedOffers = groupOffersByCity(favoriteOffers);
 
   return(
     <ul className="favorites__list">
       {Object.entries(groupedOffers).map(([city, cityOffers]) => (
-        <FavoritePlace key={city} city={city} offers={cityOffers} onCityClick={onCityClick}/>
+        <FavoritePlace key={city} city={city} offers={cityOffers}/>
       ))}
     </ul>
   );

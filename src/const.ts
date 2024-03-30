@@ -1,3 +1,5 @@
+import { CityLocationsArray } from './types/types.ts';
+
 const REVIEW_COUNT = 5;
 const AVATAR_URL = 'https://i.pravatar.cc/128';
 const URL_MARKER_DEFAULT = 'markup/img/pin.svg';
@@ -22,6 +24,40 @@ enum AuthorizationStatus {
 }
 
 const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+
+const CITY_LOCATIONS: CityLocationsArray = [
+  {
+    id: 'paris',
+    location: { latitude: 48.85661, longitude: 2.351499, zoom: 13 },
+    name: 'Paris',
+  },
+  {
+    id: 'cologne',
+    location: { latitude: 50.938361, longitude: 6.959974, zoom: 13 },
+    name: 'Cologne',
+  },
+  {
+    id: 'brussels',
+    location: { latitude: 50.846557, longitude: 4.351697, zoom: 13 },
+    name: 'Brussels',
+  },
+  {
+    id: 'amsterdam',
+    location: { latitude: 52.37454, longitude: 4.897976, zoom: 13 },
+    name: 'Amsterdam',
+  },
+  {
+    id: 'hamburg',
+    location: { latitude: 53.550341, longitude: 10.000654, zoom: 13 },
+    name: 'Hamburg',
+  },
+  {
+    id: 'dusseldorf',
+    location: { latitude: 51.225402, longitude: 6.776314, zoom: 13 },
+    name: 'Dusseldorf',
+  },
+];
+
 const TYPES = ['Room', 'Apartment', 'House', 'Hotel'];
 
 const PLACES_OPTIONS = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'];
@@ -43,4 +79,5 @@ export {
   TILE_LAYER_ATTRIBUTION,
   MIN_REVIEW_LENGTH,
   MAX_REVIEW_LENGTH,
+  CITY_LOCATIONS,
 };
