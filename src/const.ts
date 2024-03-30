@@ -60,7 +60,7 @@ const CITY_LOCATIONS: CityLocationsArray = [
 
 const TYPES = ['Room', 'Apartment', 'House', 'Hotel'];
 
-const PLACES_OPTIONS = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'];
+const PLACES_OPTIONS = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'] as const;
 
 const RATING_TITLES = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
 

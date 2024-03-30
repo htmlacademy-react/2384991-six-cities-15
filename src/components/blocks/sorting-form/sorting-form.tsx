@@ -1,19 +1,16 @@
 import { useState } from 'react';
 import PlacesOptionsList from '../places-options-list/places-options-list';
+import { SortingOption } from '../../../types/types';
 
 type SortingFormProps = {
   width: number;
   height: number;
+  currentOption: string;
+  onOptionClick: (option: SortingOption) => void;
 }
 
-function SortingForm({ width, height }: SortingFormProps): JSX.Element {
-  const [currentOption, setCurrentOption] = useState('Popular');
+function SortingForm({ width, height, currentOption, onOptionClick }: SortingFormProps): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleOptionClick = (option: string) => {
-    setCurrentOption(option);
-    setIsOpen(false);
-  };
 
   const toggleList = () => {
     setIsOpen(!isOpen);
@@ -30,7 +27,10 @@ function SortingForm({ width, height }: SortingFormProps): JSX.Element {
       </span>
       <PlacesOptionsList
         currentOption={currentOption}
-        onOptionClick={handleOptionClick}
+        onOptionClick={(option) => {
+          onOptionClick(option);
+          setIsOpen(false);
+        }}
         isOpen={isOpen}
       />
     </form>

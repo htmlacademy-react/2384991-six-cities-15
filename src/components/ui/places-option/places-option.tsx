@@ -1,7 +1,9 @@
+import { SortingOption } from '../../../types/types.ts';
+
 type PlacesOptionProps = {
-  placesOption: string;
+  placesOption: SortingOption;
   isActive: boolean;
-  onClick: (option: string) => void;
+  onClick: (option: SortingOption) => void;
 };
 
 function PlacesOption({ placesOption, isActive, onClick }: PlacesOptionProps): JSX.Element {

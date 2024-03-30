@@ -1,3 +1,5 @@
+import { PLACES_OPTIONS } from '../const.ts';
+
 export type Location = {
   latitude: number;
   longitude: number;
@@ -57,3 +59,5 @@ export type Review = {
   comment: string;
   rating: number;
 };
+
+export type SortingOption = typeof PLACES_OPTIONS[number];

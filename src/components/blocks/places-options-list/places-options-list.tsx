@@ -1,8 +1,9 @@
 import PlacesOption from '../../ui/places-option/places-option.tsx';
 import { PLACES_OPTIONS } from '../../../const.ts';
+import { SortingOption } from '../../../types/types.ts';
 
 type PlacesOptionsListProps = {
-  onOptionClick: (option: string) => void;
+  onOptionClick: (option: SortingOption) => void;
   currentOption: string;
   isOpen: boolean;
 }
