@@ -13,6 +13,7 @@ import OfferInsideList from '../../components/blocks/offer-inside-list/offer-ins
 import ReviewsList from '../../components/blocks/reviews-list/reviews-list.tsx';
 import RatingForm from '../../components/blocks/rating-form/rating-form.tsx';
 import NotFoundPage from '../not-found-page/not-found-page.tsx';
+import { selectCity, selectOffers } from '../../store/selectors.ts';
 
 const offerImageId = createIdGenerator();
 const authorizationStatus = getAuthorizationStatus();
@@ -23,8 +24,8 @@ type OfferPageProps = {
 
 function OfferPage({ reviews }: OfferPageProps): JSX.Element {
   const { id } = useParams();
-  const selectedCity = useAppSelector((state) => state.currentCity);
-  const offers = useAppSelector((state) => state.offers);
+  const selectedCity = useAppSelector(selectCity);
+  const offers = useAppSelector(selectOffers);
 
   const currentOffer: Offer | undefined = offers.find((offer) => offer.id === id);
   if (!currentOffer) {
