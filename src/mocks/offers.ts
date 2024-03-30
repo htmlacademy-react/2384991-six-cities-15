@@ -64,9 +64,11 @@ const getRandomMockOffers = ():Offer => {
 
   const randomTitle = getRandomArrayElement(TITLES);
 
-  const randomCity = getRandomArrayElement(Object.keys(CITY_LOCATIONS));
+  const randomCityObject = getRandomArrayElement(CITY_LOCATIONS);
 
-  const cityLocation = CITY_LOCATIONS[randomCity];
+  const randomCity = randomCityObject.name;
+
+  const cityLocation = randomCityObject.location;
 
   const hotelLocation: Location = generateHotelLocation(cityLocation);
 
@@ -110,4 +112,4 @@ const getRandomMockOffers = ():Offer => {
 
 const hotelOffers = Array.from({length: getRandomInteger(OFFER_COUNT)}, getRandomMockOffers);
 
-export { hotelOffers, CITY_LOCATIONS };
+export { hotelOffers };

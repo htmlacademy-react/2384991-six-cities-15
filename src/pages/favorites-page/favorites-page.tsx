@@ -1,13 +1,10 @@
 import { Helmet } from 'react-helmet-async';
+import { useAppSelector } from '../../hooks/index.ts';
 import FavoritePlacesList from '../../components/blocks/favorite-places-list/favorite-places-list.tsx';
-import { Offer } from '../../types/types.ts';
 
-type FavoritesPageProps = {
-  offers: Offer[];
-  onCityClick: (city: string) => void;
-}
+function FavoritesPage(): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
 
-function FavoritesPage({ offers, onCityClick }: FavoritesPageProps): JSX.Element {
   return(
     <>
       <Helmet>
@@ -17,7 +14,7 @@ function FavoritesPage({ offers, onCityClick }: FavoritesPageProps): JSX.Element
         <div className="page__favorites-container container">
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
-            <FavoritePlacesList offers={offers} onCityClick={onCityClick}/>
+            <FavoritePlacesList offers={offers} />
           </section>
         </div>
       </main>

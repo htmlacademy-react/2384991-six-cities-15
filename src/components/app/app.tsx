@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { useState } from 'react';
 import { AppRoute } from '../../const.ts';
 import { getAuthorizationStatus } from '../../utils/authorization-status.ts';
 import MainPage from '../../pages/main-page/main-page.tsx';
@@ -11,25 +10,14 @@ import Layout from '../layout/layout/layout.tsx';
 import MainEmptyPage from '../../pages/main-empty-page/main-empty-page.tsx';
 import NotFoundPage from '../../pages/not-found-page/not-found-page.tsx';
 import PrivateRoute from '../routes/private-route/private-route.tsx';
-import { Offer, Review } from '../../types/types.ts';
+import { Review } from '../../types/types.ts';
 
 type AppScreenProps = {
-  offers: Offer[];
   reviews: Review[];
 }
 
-function App({ offers, reviews }: AppScreenProps,): JSX.Element {
-  const [ activeOffer, setActiveOffer ] = useState<Offer | null>(null);
-  const [ selectedCity, setSelectedCity ] = useState('Amsterdam');
+function App({ reviews }: AppScreenProps,): JSX.Element {
   const authorizationStatus = getAuthorizationStatus();
-
-  const handleHover = (offer?: Offer) => {
-    setActiveOffer(offer || null);
-  };
-
-  const handleCityClick = (city: string) => {
-    setSelectedCity(city);
-  };
 
   return(
     <HelmetProvider>
@@ -39,23 +27,14 @@ function App({ offers, reviews }: AppScreenProps,): JSX.Element {
             <Route
               index
               element={
-                <MainPage
-                  offers={offers}
-                  activeOffer={activeOffer}
-                  selectedCity={selectedCity}
-                  onHover={handleHover}
-                  onCityClick={handleCityClick}
-                />
+                <MainPage/>
               }
             />
             <Route
               path={ AppRoute.Favorites }
               element={
                 <PrivateRoute authorizationStatus={ authorizationStatus }>
-                  <FavoritesPage
-                    offers={offers}
-                    onCityClick={handleCityClick}
-                  />
+                  <FavoritesPage/>
                 </PrivateRoute>
               }
             />
@@ -63,8 +42,6 @@ function App({ offers, reviews }: AppScreenProps,): JSX.Element {
               path={ AppRoute.Offer }
               element={
                 <OfferPage
-                  offers={offers}
-                  selectedCity={selectedCity}
                   reviews={reviews}
                 />
               }

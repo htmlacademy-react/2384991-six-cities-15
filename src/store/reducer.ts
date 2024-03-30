@@ -1,29 +1,29 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setCity, setOffers } from './action.ts';
-import { CITY_LOCATIONS } from '../const.ts';
-import { Offer, Location } from '../types/types.ts';
-
+import { setCity, setOffers, setActiveOffer } from './action.ts';
+import { Offer } from '../types/types.ts';
+import { hotelOffers } from '../mocks/offers.ts';
 interface OffersState {
-  city: Location;
+  currentCity: string;
   offers: Offer[];
+  activeOffer: Offer | null;
 }
 
 const initialState: OffersState = {
-  city: CITY_LOCATIONS['Paris'],
-  offers: [],
+  currentCity: 'Paris',
+  offers: hotelOffers,
+  activeOffer: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(setCity, (state, action) => {
-      const cityName = action.payload;
-      const cityLocation = CITY_LOCATIONS[cityName];
-      if (cityLocation) {
-        state.city = cityLocation;
-      }
+      state.currentCity = action.payload;
     })
     .addCase(setOffers, (state, action) => {
       state.offers = action.payload;
+    })
+    .addCase(setActiveOffer, (state, action) => {
+      state.activeOffer = action.payload;
     });
 });
 

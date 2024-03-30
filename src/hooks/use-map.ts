@@ -1,7 +1,7 @@
 import leaflet from 'leaflet';
 import { useEffect, useState, useRef, RefObject } from 'react';
-import { Location } from '../../types/types.ts';
-import { TILE_LAYER_URL_PATTERN, TILE_LAYER_ATTRIBUTION } from '../../const.ts';
+import { Location } from '../types/types.ts';
+import { TILE_LAYER_URL_PATTERN, TILE_LAYER_ATTRIBUTION } from '../const.ts';
 
 type UseMapProps = {
   mapRef: RefObject<HTMLDivElement>;
