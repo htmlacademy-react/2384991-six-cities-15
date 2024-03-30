@@ -1,11 +1,20 @@
-type PlacesInsideProps = {
+type PlacesOptionProps = {
   placesOption: string;
-}
+  isActive: boolean;
+  onClick: (option: string) => void;
+};
 
-function PlacesOption({placesOption}: PlacesInsideProps): JSX.Element {
-  return(
-    <li className="places__option" tabIndex={0}>{placesOption}</li>
+function PlacesOption({ placesOption, isActive, onClick }: PlacesOptionProps): JSX.Element {
+  return (
+    <li
+      className={`places__option ${isActive ? 'places__option--active' : ''}`}
+      tabIndex={0}
+      onClick={() => onClick(placesOption)}
+    >
+      {placesOption}
+    </li>
   );
 }
+
 
 export default PlacesOption;
