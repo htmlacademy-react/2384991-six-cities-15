@@ -18,7 +18,7 @@ function SortingForm({ width, height, currentOption, onOptionClick }: SortingFor
 
   return(
     <form className="places__sorting" action="#" method="get">
-      <span className="places__sorting-caption">Sort by</span>
+      <span className="places__sorting-caption">Sort by&nbsp;</span>
       <span className="places__sorting-type" tabIndex={0} onClick={toggleList}>
         {currentOption}
         <svg className="places__sorting-arrow" width={width} height={height}>

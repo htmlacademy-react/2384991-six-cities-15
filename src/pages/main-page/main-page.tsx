@@ -16,14 +16,14 @@ function MainPage(): JSX.Element {
   const activeOffer = useAppSelector(selectActiveOffer);
   const selectedSortingOption = useAppSelector(selectSortingOption);
 
-  const getSortedOffers = (offersToSort: Offer[], sortingOption: string): Offer[] => {
+  const getSortedOffersby = (offersToSort: Offer[], sortingOption: string): Offer[] => {
     switch (sortingOption) {
       case 'Price: low to high':
-        return [...offersToSort].sort((a, b) => a.price - b.price);
+        return [...offersToSort].sort((offerA, offerB) => offerA.price - offerB.price);
       case 'Price: high to low':
-        return [...offersToSort].sort((a, b) => b.price - a.price);
+        return [...offersToSort].sort((offerA, offerB) => offerB.price - offerA.price);
       case 'Top rated first':
-        return [...offersToSort].sort((a, b) => b.rating - a.rating);
+        return [...offersToSort].sort((offerA, offerB) => offerB.rating - offerA.rating);
       default:
         return offersToSort;
     }
@@ -37,7 +37,8 @@ function MainPage(): JSX.Element {
 
   const placesTitle = offers.length === 1 ? 'place' : 'places';
   const filteredOffers = offers.filter((offer) => offer.city.name === city.name);
-  const sortedOffers = getSortedOffers(filteredOffers, selectedSortingOption);
+  const sortedOffers = getSortedOffersby(filteredOffers, selectedSortingOption);
+
   const isEmptyPage = filteredOffers.length === 0;
 
   const handleCityClick = (cityName: string) => {
