@@ -1,8 +1,9 @@
-import { Outlet, useLocation, Link } from 'react-router-dom';
-import { useAppSelector } from '../../../hooks';
+import { Outlet, useLocation, Link, useNavigate } from 'react-router-dom';
+import { useAppSelector, useAppDispatch } from '../../../hooks/index.ts';
 import { AppRoute, AuthorizationStatus } from '../../../const';
 import { getLayoutState } from '../../../utils/layout-state';
 import { selectAuthorizationStatus } from '../../../store/selectors';
+import { logoutAction } from '../../../store/api-action.ts';
 import Logo from '../../ui/logo/logo';
 import Footer from '../footer/footer';
 
@@ -10,6 +11,13 @@ function Layout(): JSX.Element {
   const { pathname } = useLocation();
   const { rootClassName, linkClassName, shouldRenderUser } = getLayoutState(pathname as AppRoute);
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logoutAction());
+    navigate(AppRoute.Root);
+  };
 
   return(
     <div className={rootClassName}>
@@ -38,9 +46,9 @@ function Layout(): JSX.Element {
                   </li>
                   { authorizationStatus === AuthorizationStatus.Auth ? (
                     <li className="header__nav-item">
-                      <a className="header__nav-link" href="#">
+                      <button className="header__nav-link button" type="button" onClick={handleLogout}>
                         <span className="header__signout">Sign out</span>
-                      </a>
+                      </button>
                     </li>
                   ) : '' }
                 </ul>

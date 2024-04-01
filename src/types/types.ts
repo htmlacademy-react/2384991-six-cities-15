@@ -61,3 +61,16 @@ export type Review = {
 };
 
 export type SortingOption = typeof PLACES_OPTIONS[number];
+
+export type LoginInfo = {
+  email: string;
+  password: string;
+};
+
+export type LoggedUser = {
+  name: string;
+  avatarUrl: string;
+  isPro: boolean;
+  email: string;
+  token: string;
+};
