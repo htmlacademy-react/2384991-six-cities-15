@@ -5,4 +5,5 @@ export const setCity = createAction<string>('offers/setCity');
 export const setOffers = createAction<Offer[]>('offers/setOffers');
 export const setActiveOffer = createAction<Offer | null>('offers/setActiveOffer');
 export const setSortingOption = createAction<string>('offers/setSortingOption');
+export const loadOffers = createAction<Offer[]>('data/loadOffers');
 

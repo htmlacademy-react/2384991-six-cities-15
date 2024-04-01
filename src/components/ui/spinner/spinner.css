@@ -1,0 +1,29 @@
+@keyframes rotating {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.loader {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: conic-gradient(#4481c3, transparent);
+  animation: rotating 1s linear infinite;
+}
+
+.loader::before {
+  position: absolute;
+  content: '';
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #fff;
+  top: 10px;
+  left: 10px;
+}
+

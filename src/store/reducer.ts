@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setCity, setOffers, setActiveOffer, setSortingOption } from './action.ts';
+import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers } from './action.ts';
 import { Offer } from '../types/types.ts';
 import { hotelOffers } from '../mocks/offers.ts';
 interface OffersState {
@@ -29,6 +29,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setSortingOption, (state, action) => {
       state.selectedSortingOption = action.payload;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
     });
 });
 
