@@ -1,8 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { AppRoute } from '../../const.ts';
 
 function LoginPage(): JSX.Element {
+  const navigate = useNavigate();
+
+  const handleSubmitLogin = () => {
+    navigate(AppRoute.Root);
+  };
+
   return(
     <>
       <Helmet>
@@ -33,7 +39,11 @@ function LoginPage(): JSX.Element {
                   required
                 />
               </div>
-              <button className="login__submit form__submit button" type="submit">
+              <button
+                className="login__submit form__submit button"
+                type="submit"
+                onClick={handleSubmitLogin}
+              >
                 Sign in
               </button>
             </form>

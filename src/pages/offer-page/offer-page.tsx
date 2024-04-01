@@ -2,9 +2,9 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { Offer, Review } from '../../types/types.ts';
 import { createIdGenerator } from '../../utils/common.ts';
-import { getAuthorizationStatus } from '../../utils/authorization-status.ts';
 import { AuthorizationStatus } from '../../const.ts';
 import { useAppSelector } from '../../hooks/index.ts';
+import { selectAuthorizationStatus } from '../../store/selectors.ts';
 import { CITY_LOCATIONS } from '../../const.ts';
 import HotelList from '../../components/blocks/hotel-list/hotel-list.tsx';
 import Map from '../../components/ui/map/map.tsx';
@@ -16,7 +16,6 @@ import NotFoundPage from '../not-found-page/not-found-page.tsx';
 import { selectCity, selectOffers } from '../../store/selectors.ts';
 
 const offerImageId = createIdGenerator();
-const authorizationStatus = getAuthorizationStatus();
 
 type OfferPageProps = {
   reviews: Review[];
@@ -26,6 +25,7 @@ function OfferPage({ reviews }: OfferPageProps): JSX.Element {
   const { id } = useParams();
   const selectedCity = useAppSelector(selectCity);
   const offers = useAppSelector(selectOffers);
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
 
   const currentOffer: Offer | undefined = offers.find((offer) => offer.id === id);
   if (!currentOffer) {

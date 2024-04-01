@@ -1,6 +1,6 @@
 import { CityLocationsArray } from './types/types.ts';
 
-const REVIEW_COUNT = 5;
+const REVIEW_COUNT = 10;
 const AVATAR_URL = 'https://i.pravatar.cc/128';
 const URL_MARKER_DEFAULT = 'markup/img/pin.svg';
 const URL_MARKER_CURRENT = 'markup/img/pin-active.svg';
@@ -8,6 +8,7 @@ const TILE_LAYER_URL_PATTERN = 'https://{s}.basemaps.cartocdn.com/rastertiles/vo
 const TILE_LAYER_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 const MIN_REVIEW_LENGTH = 50;
 const MAX_REVIEW_LENGTH = 300;
+const TIMEOUT_SHOW_ERROR = 2000;
 
 enum AppRoute {
   Root = '/',
@@ -21,6 +22,11 @@ enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
+}
+enum APIRoute {
+  Offers = '/offers',
+  Login = '/login',
+  Logout = '/logout',
 }
 
 const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
@@ -67,6 +73,7 @@ const RATING_TITLES = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
 export {
   AppRoute,
   AuthorizationStatus,
+  APIRoute,
   REVIEW_COUNT,
   CITIES,
   TYPES,
@@ -80,4 +87,5 @@ export {
   MIN_REVIEW_LENGTH,
   MAX_REVIEW_LENGTH,
   CITY_LOCATIONS,
+  TIMEOUT_SHOW_ERROR,
 };
