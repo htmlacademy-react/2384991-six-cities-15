@@ -5,7 +5,7 @@ import { selectOffers } from '../../store/selectors.ts';
 
 function FavoritesPage(): JSX.Element {
   const offers = useAppSelector(selectOffers);
-  const isEmptyFavoritePage = offers.filter((offer) => offer.isFavorite).length === 0; // Убедитесь, что фильтруете только избранные предложения
+  const isEmptyFavoritePage = offers.filter((offer) => offer.isFavorite).length === 0;
 
   return(
     <>

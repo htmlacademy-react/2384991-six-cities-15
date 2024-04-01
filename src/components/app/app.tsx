@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { AppRoute } from '../../const.ts';
-import { getAuthorizationStatus } from '../../utils/authorization-status.ts';
+import { useAppSelector } from '../../hooks/index.ts';
+import { AppRoute, AuthorizationStatus } from '../../const.ts';
+import { selectAuthorizationStatus, selectOffersDataLoading } from '../../store/selectors.ts';
+import { Review } from '../../types/types.ts';
 import MainPage from '../../pages/main-page/main-page.tsx';
 import FavoritesPage from '../../pages/favorites-page/favorites-page.tsx';
 import OfferPage from '../../pages/offer-page/offer-page.tsx';
@@ -9,14 +11,22 @@ import LoginPage from '../../pages/login-page/login-page.tsx';
 import Layout from '../layout/layout/layout.tsx';
 import NotFoundPage from '../../pages/not-found-page/not-found-page.tsx';
 import PrivateRoute from '../routes/private-route/private-route.tsx';
-import { Review } from '../../types/types.ts';
+import Spinner from '../ui/spinner/spinner.tsx';
+
 
 type AppScreenProps = {
   reviews: Review[];
 }
 
 function App({ reviews }: AppScreenProps,): JSX.Element {
-  const authorizationStatus = getAuthorizationStatus();
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const isOffersDataLoading = useAppSelector(selectOffersDataLoading);
+
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
+    return (
+      <Spinner />
+    );
+  }
 
   return(
     <HelmetProvider>

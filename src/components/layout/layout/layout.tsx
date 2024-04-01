@@ -1,14 +1,15 @@
 import { Outlet, useLocation, Link } from 'react-router-dom';
+import { useAppSelector } from '../../../hooks';
 import { AppRoute, AuthorizationStatus } from '../../../const';
-import { getAuthorizationStatus } from '../../../utils/authorization-status';
 import { getLayoutState } from '../../../utils/layout-state';
+import { selectAuthorizationStatus } from '../../../store/selectors';
 import Logo from '../../ui/logo/logo';
 import Footer from '../footer/footer';
 
 function Layout(): JSX.Element {
   const { pathname } = useLocation();
   const { rootClassName, linkClassName, shouldRenderUser } = getLayoutState(pathname as AppRoute);
-  const authorizationStatus = getAuthorizationStatus();
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
 
   return(
     <div className={rootClassName}>
