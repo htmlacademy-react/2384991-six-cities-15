@@ -12,7 +12,6 @@ function Layout(): JSX.Element {
   const { rootClassName, linkClassName, shouldRenderUser } = getLayoutState(pathname as AppRoute);
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   const userEmail = useAppSelector(selectUserEmail);
-  console.log(userEmail)
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 

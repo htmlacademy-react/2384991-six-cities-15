@@ -16,23 +16,35 @@ function LoginPage(): JSX.Element {
   const handleFormSubmitLogin = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (loginRef.current !== null && passwordRef.current !== null) {
-      const password = passwordRef.current.value;
-      if (!PASSWORD_REGEXP.test(password)) {
-        dispatch(setError('The password must contain a minimum of one letter and one number.'));
-        setTimeout(() => {
-          dispatch(clearError());
-        }, TIMEOUT_SHOW_ERROR);
-        return;
+    const loginUser = async () => {
+      if (loginRef.current !== null && passwordRef.current !== null) {
+        const password = passwordRef.current.value;
+        if (!PASSWORD_REGEXP.test(password)) {
+          dispatch(setError('The password must contain a minimum of one letter and one number.'));
+          setTimeout(() => {
+            dispatch(clearError());
+          }, TIMEOUT_SHOW_ERROR);
+          return;
+        }
+
+        try {
+          await dispatch(loginAction({
+            login: loginRef.current.value,
+            password,
+          })).unwrap();
+          navigate(AppRoute.Root);
+        } catch {
+          dispatch(setError('Something went wrong. Please check your connection and try again.'));
+          setTimeout(() => {
+            dispatch(clearError());
+          }, TIMEOUT_SHOW_ERROR);
+        }
       }
-      dispatch(setError(null));
-      dispatch(loginAction({
-        login: loginRef.current.value,
-        password,
-      }));
-      navigate(AppRoute.Root);
-    }
+    };
+
+    loginUser();
   };
+
 
   return(
     <>
