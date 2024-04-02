@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser } from './action.ts';
+import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError } from './action.ts';
 import { Offer, LoggedUser } from '../types/types.ts';
 import { AuthorizationStatus } from '../const.ts';
 
@@ -53,6 +53,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(clearError, (state) => {
+      state.error = null;
     });
 });
 

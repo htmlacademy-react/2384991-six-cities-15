@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.ts';
-import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus } from './action.ts';
+import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser } from './action.ts';
 import { saveToken, dropToken } from '../services/token.ts';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const.ts';
 import { Offer } from '../types/types.ts';
@@ -50,12 +50,14 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
-}>
-('user/login', async ({ login: email, password }, { dispatch, extra: api }) => {
-  const {data: { token }} = await api.post<UserData>(APIRoute.Login, { email, password });
-  saveToken(token);
-  dispatch(requireAuthorization(AuthorizationStatus.Auth));
-},
+}>(
+  'user/login',
+  async ({ login: email, password }, { dispatch, extra: api }) => {
+    const response = await api.post<UserData>(APIRoute.Login, { email, password });
+    saveToken(response.data.token);
+    dispatch(setUser(response.data));
+    dispatch(requireAuthorization(AuthorizationStatus.Auth));
+  }
 );
 
 export const logoutAction = createAsyncThunk<void, undefined, {

@@ -2,7 +2,7 @@ import { Outlet, useLocation, Link, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../../hooks/index.ts';
 import { AppRoute, AuthorizationStatus } from '../../../const';
 import { getLayoutState } from '../../../utils/layout-state';
-import { selectAuthorizationStatus } from '../../../store/selectors';
+import { selectAuthorizationStatus, selectUserEmail } from '../../../store/selectors';
 import { logoutAction } from '../../../store/api-action.ts';
 import Logo from '../../ui/logo/logo';
 import Footer from '../footer/footer';
@@ -11,6 +11,8 @@ function Layout(): JSX.Element {
   const { pathname } = useLocation();
   const { rootClassName, linkClassName, shouldRenderUser } = getLayoutState(pathname as AppRoute);
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const userEmail = useAppSelector(selectUserEmail);
+  console.log(userEmail)
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -38,7 +40,7 @@ function Layout(): JSX.Element {
                       { authorizationStatus === AuthorizationStatus.Auth ? (
                         <>
                           <span className="header__user-name user__name">
-                            Oliver.conner@gmail.com
+                            {userEmail}
                           </span><span className="header__favorite-count">3</span>
                         </>
                       ) : <span className="header__login">Sign in</span> }

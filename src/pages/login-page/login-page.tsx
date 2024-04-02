@@ -3,7 +3,8 @@ import { useRef, FormEvent } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useAppDispatch } from '../../hooks/index.ts';
 import { loginAction } from '../../store/api-action.ts';
-import { AppRoute, PASSWORD_REGEXP } from '../../const.ts';
+import { setError, clearError } from '../../store/action.ts';
+import { AppRoute, PASSWORD_REGEXP, TIMEOUT_SHOW_ERROR } from '../../const.ts';
 
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
@@ -15,12 +16,19 @@ function LoginPage(): JSX.Element {
   const handleFormSubmitLogin = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (loginRef.current !== null
-      && passwordRef.current !== null
-      && PASSWORD_REGEXP.test(passwordRef.current.value)) {
+    if (loginRef.current !== null && passwordRef.current !== null) {
+      const password = passwordRef.current.value;
+      if (!PASSWORD_REGEXP.test(password)) {
+        dispatch(setError('The password must contain a minimum of one letter and one number.'));
+        setTimeout(() => {
+          dispatch(clearError());
+        }, TIMEOUT_SHOW_ERROR);
+        return;
+      }
+      dispatch(setError(null));
       dispatch(loginAction({
         login: loginRef.current.value,
-        password: passwordRef.current.value
+        password,
       }));
       navigate(AppRoute.Root);
     }
