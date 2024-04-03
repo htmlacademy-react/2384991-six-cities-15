@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError } from './action.ts';
-import { Offer, LoggedUser } from '../types/types.ts';
+import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError, setOfferDetails, setNearbyOffers, setOfferComments, setIsLoading } from './action.ts';
+import { Offer, LoggedUser, Review } from '../types/types.ts';
 import { AuthorizationStatus } from '../const.ts';
 
 interface OffersState {
@@ -12,6 +12,10 @@ interface OffersState {
   error: string | null;
   isOffersDataLoading: boolean;
   user: LoggedUser | null;
+  offerDetails: Offer | null;
+  offerComments: Review[];
+  nearbyOffers: Offer[];
+  isLoading: boolean;
 }
 
 const initialState: OffersState = {
@@ -23,6 +27,10 @@ const initialState: OffersState = {
   error: null,
   isOffersDataLoading: false,
   user: null,
+  offerDetails: null,
+  offerComments: [],
+  nearbyOffers: [],
+  isLoading: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -56,6 +64,18 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(clearError, (state) => {
       state.error = null;
+    })
+    .addCase(setOfferDetails, (state, action) => {
+      state.offerDetails = action.payload;
+    })
+    .addCase(setOfferComments, (state, action) => {
+      state.offerComments = action.payload;
+    })
+    .addCase(setNearbyOffers, (state, action) => {
+      state.nearbyOffers = action.payload;
+    })
+    .addCase(setIsLoading, (state, action) => {
+      state.isLoading = action.payload;
     });
 });
 

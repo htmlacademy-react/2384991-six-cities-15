@@ -25,7 +25,7 @@ enum AuthorizationStatus {
 }
 enum APIRoute {
   Offers = '/offers',
-  Comment = '/comments',
+  Comments = '/comments',
   Favorite = 'favorite',
   Login = '/login',
   Logout = '/logout',

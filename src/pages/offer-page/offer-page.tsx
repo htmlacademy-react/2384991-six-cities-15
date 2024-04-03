@@ -1,9 +1,10 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { Offer, Review } from '../../types/types.ts';
 import { createIdGenerator } from '../../utils/common.ts';
 import { AuthorizationStatus } from '../../const.ts';
-import { useAppSelector } from '../../hooks/index.ts';
+import { useAppSelector, useAppDispatch } from '../../hooks/index.ts';
 import { selectAuthorizationStatus } from '../../store/selectors.ts';
 import { CITY_LOCATIONS } from '../../const.ts';
 import HotelList from '../../components/blocks/hotel-list/hotel-list.tsx';
@@ -13,7 +14,9 @@ import OfferInsideList from '../../components/blocks/offer-inside-list/offer-ins
 import ReviewsList from '../../components/blocks/reviews-list/reviews-list.tsx';
 import RatingForm from '../../components/blocks/rating-form/rating-form.tsx';
 import NotFoundPage from '../not-found-page/not-found-page.tsx';
-import { selectCity, selectOffers } from '../../store/selectors.ts';
+import Spinner from '../../components/ui/spinner/spinner.tsx';
+import { selectCity, selectOffers, selectOffersDataLoadingStatus } from '../../store/selectors.ts';
+import { fetchOfferDetailsById } from '../../store/api-action.ts';
 
 const offerImageId = createIdGenerator();
 
@@ -23,9 +26,23 @@ type OfferPageProps = {
 
 function OfferPage({ reviews }: OfferPageProps): JSX.Element {
   const { id } = useParams();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchOfferDetailsById(id));
+    }
+  }, [id, dispatch]);
+
   const selectedCity = useAppSelector(selectCity);
   const offers = useAppSelector(selectOffers);
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const isLoading = useAppSelector(selectOffersDataLoadingStatus);
+  // const offerDetails = useAppSelector(selectOfferDetails);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   const currentOffer: Offer | undefined = offers.find((offer) => offer.id === id);
   if (!currentOffer) {

@@ -9,6 +9,10 @@ const selectAuthorizationStatus = (state: RootState) => state.authorizationStatu
 const selectOffersDataLoading = (state: RootState) => state.isOffersDataLoading;
 const selectUser = (state: RootState) => state.user;
 const selectUserEmail = (state: RootState) => state.user?.email;
+const selectOfferDetails = (state: RootState) => state.offerDetails;
+const selectOfferComments = (state: RootState) => state.offerComments;
+const selectNearbyOffers = (state: RootState) => state.nearbyOffers;
+const selectOffersDataLoadingStatus = (state: RootState) => state.isLoading;
 
 export {
   selectCity,
@@ -20,4 +24,8 @@ export {
   selectOffersDataLoading,
   selectUser,
   selectUserEmail,
+  selectOfferDetails,
+  selectOfferComments,
+  selectNearbyOffers,
+  selectOffersDataLoadingStatus,
 };
