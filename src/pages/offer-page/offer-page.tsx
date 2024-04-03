@@ -38,7 +38,7 @@ function OfferPage({ reviews }: OfferPageProps): JSX.Element {
   const offers = useAppSelector(selectOffers);
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   const isLoading = useAppSelector(selectOffersDataLoadingStatus);
-  // const offerDetails = useAppSelector(selectOfferDetails);
+  //const offerDetails = useAppSelector(selectOfferDetails);
 
   if (isLoading) {
     return <Spinner />;

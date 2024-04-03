@@ -25,7 +25,7 @@ function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, t
         </div>
       )}
       <div className={`${baseClassName}__image-wrapper place-card__image-wrapper`}>
-        <Link to={ `/offer/${id}` }>
+        <Link to={ `/offers/${id}` }>
           <img
             className="place-card__image"
             src={previewImage}
