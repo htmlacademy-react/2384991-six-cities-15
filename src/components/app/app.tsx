@@ -42,7 +42,7 @@ function App({ reviews }: AppScreenProps,): JSX.Element {
             <Route
               path={ AppRoute.Favorites }
               element={
-                <PrivateRoute authorizationStatus={ authorizationStatus }>
+                <PrivateRoute>
                   <FavoritesPage/>
                 </PrivateRoute>
               }
@@ -58,7 +58,7 @@ function App({ reviews }: AppScreenProps,): JSX.Element {
             <Route
               path={ AppRoute.Login }
               element={
-                <PrivateRoute authorizationStatus={ authorizationStatus } isReverse>
+                <PrivateRoute isReverse>
                   <LoginPage />
                 </PrivateRoute>
               }

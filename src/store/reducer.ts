@@ -1,7 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus } from './action.ts';
-import { Offer } from '../types/types.ts';
+import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError } from './action.ts';
+import { Offer, LoggedUser } from '../types/types.ts';
 import { AuthorizationStatus } from '../const.ts';
+
 interface OffersState {
   currentCity: string;
   offers: Offer[];
@@ -10,6 +11,7 @@ interface OffersState {
   authorizationStatus: AuthorizationStatus;
   error: string | null;
   isOffersDataLoading: boolean;
+  user: LoggedUser | null;
 }
 
 const initialState: OffersState = {
@@ -20,6 +22,7 @@ const initialState: OffersState = {
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
   isOffersDataLoading: false,
+  user: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -45,8 +48,14 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
+    .addCase(setUser, (state, action) => {
+      state.user = action.payload;
+    })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(clearError, (state) => {
+      state.error = null;
     });
 });
 

@@ -1,13 +1,16 @@
 import { Navigate } from 'react-router-dom';
+import { useAppSelector } from '../../../hooks/index.ts';
 import { AppRoute, AuthorizationStatus } from '../../../const.ts';
+import { selectAuthorizationStatus } from '../../../store/selectors.ts';
 
 type PrivateRouteProps = {
-  authorizationStatus: AuthorizationStatus;
   children: JSX.Element;
   isReverse?: boolean;
 }
 
-function PrivateRoute({ authorizationStatus, children, isReverse }: PrivateRouteProps): JSX.Element {
+function PrivateRoute({ children, isReverse }: PrivateRouteProps): JSX.Element {
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+
   return (
     authorizationStatus === (isReverse ? AuthorizationStatus.NoAuth : AuthorizationStatus.Auth)
       ? children

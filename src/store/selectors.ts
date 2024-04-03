@@ -7,6 +7,8 @@ const selectSortingOption = (state: RootState) => state.selectedSortingOption;
 const selectErrorMessage = (state: RootState) => state.error;
 const selectAuthorizationStatus = (state: RootState) => state.authorizationStatus;
 const selectOffersDataLoading = (state: RootState) => state.isOffersDataLoading;
+const selectUser = (state: RootState) => state.user;
+const selectUserEmail = (state: RootState) => state.user?.email;
 
 export {
   selectCity,
@@ -16,4 +18,6 @@ export {
   selectErrorMessage,
   selectAuthorizationStatus,
   selectOffersDataLoading,
+  selectUser,
+  selectUserEmail,
 };

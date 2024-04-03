@@ -9,13 +9,13 @@ const TILE_LAYER_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/co
 const MIN_REVIEW_LENGTH = 50;
 const MAX_REVIEW_LENGTH = 300;
 const TIMEOUT_SHOW_ERROR = 2000;
+const PASSWORD_REGEXP = /^.*(?=.*[a-zA-Z])(?=.*\d).*$/;
 
 enum AppRoute {
   Root = '/',
   Login = '/login',
   Favorites = '/favorites',
   Offer = '/offer/:id',
-  EmptyMain = '/dev-main-empty',
 }
 
 enum AuthorizationStatus {
@@ -25,6 +25,8 @@ enum AuthorizationStatus {
 }
 enum APIRoute {
   Offers = '/offers',
+  Comment = '/comments',
+  Favorite = 'favorite',
   Login = '/login',
   Logout = '/logout',
 }
@@ -88,4 +90,5 @@ export {
   MAX_REVIEW_LENGTH,
   CITY_LOCATIONS,
   TIMEOUT_SHOW_ERROR,
+  PASSWORD_REGEXP,
 };
