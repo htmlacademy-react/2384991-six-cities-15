@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.ts';
-import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser } from './action.ts';
+import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError } from './action.ts';
 import { saveToken, dropToken } from '../services/token.ts';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const.ts';
 import { Offer } from '../types/types.ts';
@@ -23,13 +23,24 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
-}>
-('data/fetchOffers', async (_arg, { dispatch, extra: api }) => {
-  dispatch(setOffersDataLoadingStatus(true));
-  const { data } = await api.get<Offer[]>(APIRoute.Offers);
-  dispatch(setOffersDataLoadingStatus(false));
-  dispatch(loadOffers(data));
-});
+}>(
+  'data/fetchOffers',
+  async (_arg, { dispatch, extra: api }) => {
+    dispatch(setOffersDataLoadingStatus(true));
+    try {
+      const { data } = await api.get<Offer[]>(APIRoute.Offers);
+      dispatch(loadOffers(data));
+    } catch (error) {
+      dispatch(setError('Something went wrong. Please check your connection and try again.'));
+      setTimeout(() => {
+        dispatch(clearError());
+      }, TIMEOUT_SHOW_ERROR);
+    } finally {
+      dispatch(setOffersDataLoadingStatus(false));
+    }
+  }
+);
+
 
 export const checkAuthAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;

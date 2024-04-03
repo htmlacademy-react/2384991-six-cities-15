@@ -1,16 +1,19 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useRef, FormEvent } from 'react';
+import { useRef, FormEvent, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useAppDispatch } from '../../hooks/index.ts';
+import { useAppDispatch, useAppSelector } from '../../hooks/index.ts';
 import { loginAction } from '../../store/api-action.ts';
 import { setError, clearError } from '../../store/action.ts';
 import { AppRoute, PASSWORD_REGEXP, TIMEOUT_SHOW_ERROR } from '../../const.ts';
+import { selectCity } from '../../store/selectors.ts';
 
 function LoginPage(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const dispatch = useAppDispatch();
+  const currentCity = useAppSelector(selectCity);
   const navigate = useNavigate();
 
   const handleFormSubmitLogin = (evt: FormEvent<HTMLFormElement>) => {
@@ -27,6 +30,7 @@ function LoginPage(): JSX.Element {
           return;
         }
 
+        setIsSubmitting(true);
         try {
           await dispatch(loginAction({
             login: loginRef.current.value,
@@ -39,6 +43,7 @@ function LoginPage(): JSX.Element {
             dispatch(clearError());
           }, TIMEOUT_SHOW_ERROR);
         }
+        setIsSubmitting(true);
       }
     };
 
@@ -82,6 +87,8 @@ function LoginPage(): JSX.Element {
               <button
                 className="login__submit form__submit button"
                 type="submit"
+                disabled={isSubmitting}
+                style={{ backgroundColor: isSubmitting ? 'grey' : '' }}
               >
                 Sign in
               </button>
@@ -90,7 +97,7 @@ function LoginPage(): JSX.Element {
           <section className="locations locations--login locations--current">
             <div className="locations__item">
               <Link className="locations__item-link" to={ AppRoute.Root }>
-                <span>Amsterdam</span>
+                <span>{currentCity}</span>
               </Link>
             </div>
           </section>

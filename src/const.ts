@@ -16,7 +16,6 @@ enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
   Offer = '/offer/:id',
-  EmptyMain = '/dev-main-empty',
 }
 
 enum AuthorizationStatus {
@@ -26,6 +25,8 @@ enum AuthorizationStatus {
 }
 enum APIRoute {
   Offers = '/offers',
+  Comment = '/comments',
+  Favorite = 'favorite',
   Login = '/login',
   Logout = '/logout',
 }
