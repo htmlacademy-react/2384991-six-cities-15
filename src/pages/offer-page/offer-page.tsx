@@ -11,14 +11,14 @@ import OfferInsideList from '../../components/blocks/offer-inside-list/offer-ins
 import ReviewsList from '../../components/blocks/reviews-list/reviews-list.tsx';
 import RatingForm from '../../components/blocks/rating-form/rating-form.tsx';
 import NotFoundPage from '../not-found-page/not-found-page.tsx';
+import FavoriteButton from '../../components/ui/favorite-button/favorite-button.tsx';
 import { selectAuthorizationStatus, selectCity, selectOfferDetails, selectOfferComments, selectNearbyOffers } from '../../store/selectors.ts';
-import { fetchOfferDetailsById, fetchOfferComments, fetchNearbyOffers } from '../../store/api-action.ts';
-
+import { fetchOfferDetailsById, fetchOfferComments, fetchNearbyOffers, fetchFavoriteOffers } from '../../store/api-action.ts';
 
 const offerImageId = createIdGenerator();
 
 function OfferPage(): JSX.Element {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -37,6 +37,12 @@ function OfferPage(): JSX.Element {
   const currentOffer = useAppSelector(selectOfferDetails);
   const reviews = useAppSelector(selectOfferComments);
   const nearOffers = useAppSelector(selectNearbyOffers);
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoriteOffers());
+    }
+  }, [dispatch, authorizationStatus]);
 
   if (!currentOffer) {
     return <NotFoundPage />;
@@ -64,6 +70,7 @@ function OfferPage(): JSX.Element {
 
   const bedroomsTitle = `${bedrooms > 1 ? 'bedrooms' : 'bedroom'}`;
   const maxAdultsTitle = `${maxAdults > 1 ? 'adults' : 'adult'}`;
+  const offerId = id ?? 'defaultId';
 
   return(
     <>
@@ -89,12 +96,7 @@ function OfferPage(): JSX.Element {
                 <h1 className="offer__name">
                   {title}
                 </h1>
-                <button className={`offer__bookmark-button button${isFavorite ? ' offer__bookmark-button--active' : ''}`} type="button">
-                  <svg className="offer__bookmark-icon" width={31} height={33}>
-                    <use xlinkHref="#icon-bookmark" />
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <FavoriteButton offerId={offerId} isFavorite={isFavorite} width={31} height={33} buttonType="offer" />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">

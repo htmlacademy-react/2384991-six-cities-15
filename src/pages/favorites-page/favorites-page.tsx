@@ -1,11 +1,23 @@
 import { Helmet } from 'react-helmet-async';
-import { useAppSelector } from '../../hooks/index.ts';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/index.ts';
 import FavoritePlacesList from '../../components/blocks/favorite-places-list/favorite-places-list.tsx';
-import { selectOffers } from '../../store/selectors.ts';
+import { selectAuthorizationStatus, selectFavoriteOffers } from '../../store/selectors.ts';
+import { AuthorizationStatus } from '../../const.ts';
+import { fetchFavoriteOffers } from '../../store/api-action.ts';
 
 function FavoritesPage(): JSX.Element {
-  const offers = useAppSelector(selectOffers);
-  const isEmptyFavoritePage = offers.filter((offer) => offer.isFavorite).length === 0;
+  const favoriteOffers = useAppSelector(selectFavoriteOffers);
+  const isEmptyFavoritePage = favoriteOffers.filter((offer) => offer.isFavorite).length === 0;
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoriteOffers());
+    }
+  }, [dispatch, authorizationStatus]);
+
 
   return(
     <>
@@ -14,7 +26,7 @@ function FavoritesPage(): JSX.Element {
       </Helmet>
       <main className={`page__main page__main--favorites ${isEmptyFavoritePage ? 'page__main--favorites-empty' : ''}`}>
         <div className="page__favorites-container container">
-          <section className={`favorites ${isEmptyFavoritePage ? 'favorites--empty' : ''}`}>
+          <section className={`favorites${isEmptyFavoritePage ? ' favorites--empty' : ''}`}>
             {
               isEmptyFavoritePage ?
                 (
@@ -31,7 +43,7 @@ function FavoritesPage(): JSX.Element {
                 (
                   <>
                     <h1 className="favorites__title">Saved listing</h1>
-                    <FavoritePlacesList offers={offers} />
+                    <FavoritePlacesList offers={favoriteOffers} />
                   </>
                 )
             }

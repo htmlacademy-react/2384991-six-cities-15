@@ -11,6 +11,7 @@ const selectUser = (state: RootState) => state.user;
 const selectOfferDetails = (state: RootState) => state.offerDetails;
 const selectOfferComments = (state: RootState) => state.offerComments;
 const selectNearbyOffers = (state: RootState) => state.nearbyOffers;
+const selectFavoriteOffers = (state: RootState) => state.favoriteOffers;
 
 export {
   selectCity,
@@ -24,4 +25,5 @@ export {
   selectOfferDetails,
   selectOfferComments,
   selectNearbyOffers,
+  selectFavoriteOffers,
 };

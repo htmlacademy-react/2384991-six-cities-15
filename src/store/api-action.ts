@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.ts';
-import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError, setOfferDetails, setOfferComments, setNearbyOffers } from './action.ts';
+import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError, setOfferDetails, setOfferComments, setNearbyOffers, updateOffer } from './action.ts';
 import { saveToken, dropToken, saveUserEmail, dropUserEmail } from '../services/token.ts';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const.ts';
 import { Offer, Review } from '../types/types.ts';
@@ -170,3 +170,42 @@ export const postComment = createAsyncThunk<Review[], { offerId: string; comment
   }
 );
 
+export const fetchFavoriteOffers = createAsyncThunk<Offer[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'offers/fetchFavorites',
+  async (_, { dispatch, extra: api }) => {
+    try {
+      const response = await api.get<Offer[]>(APIRoute.Favorite);
+      return response.data;
+    } catch (error) {
+      dispatch(setError('Failed to get the list of favorite offers. Please, try again.'));
+      setTimeout(() => {
+        dispatch(clearError());
+      }, TIMEOUT_SHOW_ERROR);
+      return [];
+    }
+  }
+);
+
+export const toggleFavoriteStatus = createAsyncThunk<void, { offerId: string; status: boolean }, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'offers/toggleFavorite',
+  async ({ offerId, status }, { dispatch, extra: api }) => {
+    try {
+      const response = await api.post<Offer>(`${APIRoute.Favorite}/${offerId}/${status ? 1 : 0}`);
+      dispatch(updateOffer(response.data));
+      dispatch(fetchFavoriteOffers());
+    } catch (error) {
+      dispatch(setError('Failed to change the status of the favorite offer. Please, try again.'));
+      setTimeout(() => {
+        dispatch(clearError());
+      }, TIMEOUT_SHOW_ERROR);
+    }
+  }
+);
