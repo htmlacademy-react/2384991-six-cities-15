@@ -1,9 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { useAppSelector } from '../../hooks/index.ts';
-import { AppRoute, AuthorizationStatus } from '../../const.ts';
-import { selectAuthorizationStatus, selectOffersDataLoading } from '../../store/selectors.ts';
-import { Review } from '../../types/types.ts';
+import { AppRoute } from '../../const.ts';
 import MainPage from '../../pages/main-page/main-page.tsx';
 import FavoritesPage from '../../pages/favorites-page/favorites-page.tsx';
 import OfferPage from '../../pages/offer-page/offer-page.tsx';
@@ -11,22 +9,16 @@ import LoginPage from '../../pages/login-page/login-page.tsx';
 import Layout from '../layout/layout/layout.tsx';
 import NotFoundPage from '../../pages/not-found-page/not-found-page.tsx';
 import PrivateRoute from '../routes/private-route/private-route.tsx';
-import Spinner from '../ui/spinner/spinner.tsx';
+import { useAppDispatch } from '../../hooks/index.ts';
+import { checkAuthAction } from '../../store/api-action.ts';
 
 
-type AppScreenProps = {
-  reviews: Review[];
-}
+function App(): JSX.Element {
+  const dispatch = useAppDispatch();
 
-function App({ reviews }: AppScreenProps,): JSX.Element {
-  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
-  const isOffersDataLoading = useAppSelector(selectOffersDataLoading);
-
-  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
-    return (
-      <Spinner />
-    );
-  }
+  useEffect(() => {
+    dispatch(checkAuthAction());
+  }, [dispatch]);
 
   return(
     <HelmetProvider>
@@ -50,15 +42,13 @@ function App({ reviews }: AppScreenProps,): JSX.Element {
             <Route
               path={ AppRoute.Offer }
               element={
-                <OfferPage
-                  reviews={reviews}
-                />
+                <OfferPage />
               }
             />
             <Route
               path={ AppRoute.Login }
               element={
-                <PrivateRoute isReverse>
+                <PrivateRoute isReverse >
                   <LoginPage />
                 </PrivateRoute>
               }

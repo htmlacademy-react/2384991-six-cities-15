@@ -4,19 +4,21 @@ type RatingStarProps = {
   title: string;
   onChange: () => void;
   checked: boolean;
+  disabled: boolean;
 };
 
-function RatingStar({ id, ratingValue, title, onChange, checked }: RatingStarProps): JSX.Element {
+function RatingStar({ id, ratingValue, title, onChange, checked, disabled }: RatingStarProps): JSX.Element {
   return (
     <>
       <input
         className="form__rating-input visually-hidden"
         name="rating"
-        defaultValue={ratingValue}
+        value={ratingValue}
         id={id}
         type="radio"
         onChange={onChange}
         checked={checked}
+        disabled={disabled}
       />
       <label
         htmlFor={id}

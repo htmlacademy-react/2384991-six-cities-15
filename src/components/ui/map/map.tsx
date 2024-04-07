@@ -40,6 +40,7 @@ function Map({baseClassName = 'cities', city, offers, activeOffer}: MapProps): J
 
   useEffect(() => {
     if (map && offers) {
+      markerLayer.current.clearLayers();
       offers.forEach((offer) => {
         if (offer.location) {
           leaflet.
@@ -52,7 +53,7 @@ function Map({baseClassName = 'cities', city, offers, activeOffer}: MapProps): J
         }
       });
     }
-  }, [ activeOffer, map, offers ]);
+  }, [activeOffer, map, offers]);
 
   return(
     <section

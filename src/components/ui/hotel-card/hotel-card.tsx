@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { HotelCardOffers } from '../../../types/types.ts';
+import { capitalizeFirstLetter } from '../../../utils/common.ts';
 
 type HotelCardAdditionalProps = {
   imageWidth: number;
@@ -12,6 +13,9 @@ type HotelCardAdditionalProps = {
 type HotelCardProps = HotelCardOffers & HotelCardAdditionalProps;
 
 function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, type, price, isFavorite, isPremium, previewImage, rating, id, onMouseOver, onMouseLeave }: HotelCardProps): JSX.Element {
+  const hotelType = capitalizeFirstLetter(type);
+  const roundedRating = Math.round(rating);
+  const ratingPercentage = roundedRating * 20;
 
   return(
     <article
@@ -25,7 +29,7 @@ function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, t
         </div>
       )}
       <div className={`${baseClassName}__image-wrapper place-card__image-wrapper`}>
-        <Link to={ `/offers/${id}` }>
+        <Link to={ `/offer/${id}` }>
           <img
             className="place-card__image"
             src={previewImage}
@@ -57,14 +61,14 @@ function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, t
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${rating * 20}%` }}></span>
+            <span style={{ width: `${ratingPercentage}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{hotelType}</p>
       </div>
     </article>
   );

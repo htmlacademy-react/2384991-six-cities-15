@@ -16,4 +16,3 @@ export const clearError = createAction('app/clearError');
 export const setOfferDetails = createAction<Offer | null>('data/setOfferDetails');
 export const setOfferComments = createAction<Review[]>('data/setOfferComments');
 export const setNearbyOffers = createAction<Offer[]>('data/setNearbyOffers');
-export const setIsLoading = createAction<boolean>('data/setIsLoading');

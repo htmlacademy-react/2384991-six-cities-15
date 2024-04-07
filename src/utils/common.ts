@@ -30,10 +30,13 @@ const generateHotelLocation = (cityLocation: Location): Location => {
   };
 };
 
+const capitalizeFirstLetter = (string: string) => string.charAt(0).toUpperCase() + string.slice(1);
+
 export { getRandomArrayElement,
   getRandomInteger,
   getRandomBoolean,
   createIdGenerator,
   getRandomRating,
   generateHotelLocation,
+  capitalizeFirstLetter
 };

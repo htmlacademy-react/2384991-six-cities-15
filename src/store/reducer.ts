@@ -1,7 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError, setOfferDetails, setNearbyOffers, setOfferComments, setIsLoading } from './action.ts';
+import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError, setOfferDetails, setNearbyOffers, setOfferComments } from './action.ts';
 import { Offer, LoggedUser, Review } from '../types/types.ts';
 import { AuthorizationStatus } from '../const.ts';
+import { postComment } from './api-action.ts';
 
 interface OffersState {
   currentCity: string;
@@ -15,7 +16,7 @@ interface OffersState {
   offerDetails: Offer | null;
   offerComments: Review[];
   nearbyOffers: Offer[];
-  isLoading: boolean;
+  isOneOfferDataLoading: boolean;
 }
 
 const initialState: OffersState = {
@@ -30,7 +31,7 @@ const initialState: OffersState = {
   offerDetails: null,
   offerComments: [],
   nearbyOffers: [],
-  isLoading: false,
+  isOneOfferDataLoading: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -74,8 +75,8 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setNearbyOffers, (state, action) => {
       state.nearbyOffers = action.payload;
     })
-    .addCase(setIsLoading, (state, action) => {
-      state.isLoading = action.payload;
+    .addCase(postComment.fulfilled, (state, action) => {
+      state.offerComments.unshift(action.payload[0]);
     });
 });
 
