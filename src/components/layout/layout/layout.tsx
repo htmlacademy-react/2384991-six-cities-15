@@ -3,18 +3,17 @@ import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../hooks/index.ts';
 import { AppRoute, AuthorizationStatus } from '../../../const';
 import { getLayoutState } from '../../../utils/layout-state';
-import { selectAuthorizationStatus, selectFavoriteOffers } from '../../../store/selectors';
+import { selectAuthorizationStatus, selectFavoriteOffers, selectUser } from '../../../store/selectors';
 import { fetchFavoriteOffers, logoutAction } from '../../../store/api-action.ts';
 import Logo from '../../ui/logo/logo';
 import Footer from '../footer/footer';
-import { getUserEmail } from '../../../services/token.ts';
 
 
 function Layout(): JSX.Element {
   const { pathname } = useLocation();
   const { rootClassName, linkClassName, shouldRenderUser } = getLayoutState(pathname as AppRoute);
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
-  const userEmail = getUserEmail();
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -35,6 +34,8 @@ function Layout(): JSX.Element {
       }
     });
   };
+
+  const userEmail = user ? user.email : '';
 
   return(
     <div className={rootClassName}>
