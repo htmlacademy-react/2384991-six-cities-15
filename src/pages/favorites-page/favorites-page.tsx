@@ -8,7 +8,7 @@ import { fetchFavoriteOffers } from '../../store/api-action.ts';
 
 function FavoritesPage(): JSX.Element {
   const favoriteOffers = useAppSelector(selectFavoriteOffers);
-  const isEmptyFavoritePage = favoriteOffers.filter((offer) => offer.isFavorite).length === 0;
+  const isEmptyFavoritePage = favoriteOffers.length === 0;
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
 
@@ -24,7 +24,7 @@ function FavoritesPage(): JSX.Element {
       <Helmet>
         <title>6 cities. Favorite places to stay</title>
       </Helmet>
-      <main className={`page__main page__main--favorites ${isEmptyFavoritePage ? 'page__main--favorites-empty' : ''}`}>
+      <main className={`page__main page__main--favorites ${isEmptyFavoritePage ? 'page__main--favorites-empty page--favorites-empty' : ''}`}>
         <div className="page__favorites-container container">
           <section className={`favorites${isEmptyFavoritePage ? ' favorites--empty' : ''}`}>
             {

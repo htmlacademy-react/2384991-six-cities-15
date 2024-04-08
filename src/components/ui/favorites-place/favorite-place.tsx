@@ -14,7 +14,7 @@ function FavoritePlace({ city, offers }: FavoritePlaceProps): JSX.Element {
       <div className="favorites__locations locations locations--current">
         <Location city={city} isFavoritePage key={city}/>
       </div>
-      <HotelList offers={offers} baseClassName="favorites" className="favorites__list" imageWidth={150} imageHeight={110}/>
+      <HotelList offers={offers} baseClassName="favorites" className="favorites__places" imageWidth={150} imageHeight={110}/>
     </li>
   );
 }

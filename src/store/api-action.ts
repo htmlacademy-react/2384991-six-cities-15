@@ -151,7 +151,6 @@ export const postComment = createAsyncThunk<Review[], { offerId: string; comment
 }>(
   'data/postComment',
   async ({ offerId, commentText, rating }, { dispatch, extra: api }) => {
-    dispatch(setOffersDataLoadingStatus(true));
     try {
       const { data } = await api.post<Review[]>(`${APIRoute.Comments}/${offerId}`, {
         comment: commentText,
@@ -164,8 +163,6 @@ export const postComment = createAsyncThunk<Review[], { offerId: string; comment
         dispatch(clearError());
       }, TIMEOUT_SHOW_ERROR);
       return Promise.reject(error);
-    } finally {
-      dispatch(setOffersDataLoadingStatus(false));
     }
   }
 );

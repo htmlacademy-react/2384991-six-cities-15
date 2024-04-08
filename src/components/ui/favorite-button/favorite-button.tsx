@@ -32,6 +32,8 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ offerId, isFavorite, bu
       baseClass += ` offer__bookmark-button ${isFavorite ? 'offer__bookmark-button--active' : ''}`;
     } else if (buttonType === 'card') {
       baseClass += ` place-card__bookmark-button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`;
+    } else if (buttonType === 'favorite') {
+      baseClass += ` favorites__locations-items place-card__bookmark-button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`;
     }
     return baseClass;
   };

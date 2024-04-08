@@ -81,9 +81,20 @@ const reducer = createReducer(initialState, (builder) => {
       state.offerComments = [action.payload[0], ...state.offerComments];
     })
     .addCase(updateOffer, (state, action) => {
-      const index = state.offers.findIndex((offer) => offer.id === action.payload.id);
-      if (index !== -1) {
-        state.offers[index] = action.payload;
+      if (state.offerDetails && state.offerDetails.id === action.payload.id) {
+        state.offerDetails = {...state.offerDetails, ...action.payload};
+      }
+      const offersIndex = state.offers.findIndex((offer) => offer.id === action.payload.id);
+      if (offersIndex !== -1) {
+        state.offers[offersIndex] = action.payload;
+      }
+      const nearbyOffersIndex = state.nearbyOffers.findIndex((offer) => offer.id === action.payload.id);
+      if (nearbyOffersIndex !== -1) {
+        state.nearbyOffers[nearbyOffersIndex] = action.payload;
+      }
+      const favoriteOffersIndex = state.favoriteOffers.findIndex((offer) => offer.id === action.payload.id);
+      if (favoriteOffersIndex !== -1) {
+        state.favoriteOffers[favoriteOffersIndex] = action.payload;
       }
     })
     .addCase(fetchFavoriteOffers.fulfilled, (state, action) => {
