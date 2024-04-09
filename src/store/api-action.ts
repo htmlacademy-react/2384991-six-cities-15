@@ -126,6 +126,29 @@ export const fetchOfferComments = createAsyncThunk<void, string, {
   }
 );
 
+export const postComment = createAsyncThunk<Review, { offerId: string; commentText: string; rating: number }, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/postComment',
+  async ({ offerId, commentText, rating }, { dispatch, extra: api }) => {
+    try {
+      const { data } = await api.post<Review>(`${APIRoute.Comments}/${offerId}`, {
+        comment: commentText,
+        rating,
+      });
+      return data;
+    } catch (error) {
+      dispatch(setError('Unable to post comment. Please try again later.'));
+      setTimeout(() => {
+        dispatch(clearError());
+      }, TIMEOUT_SHOW_ERROR);
+      return Promise.reject(error);
+    }
+  }
+);
+
 export const fetchNearbyOffers = createAsyncThunk<void, string, {
   dispatch: AppDispatch;
   state: State;
@@ -145,28 +168,6 @@ export const fetchNearbyOffers = createAsyncThunk<void, string, {
   }
 );
 
-export const postComment = createAsyncThunk<Review[], { offerId: string; commentText: string; rating: number }, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
-  'data/postComment',
-  async ({ offerId, commentText, rating }, { dispatch, extra: api }) => {
-    try {
-      const { data } = await api.post<Review[]>(`${APIRoute.Comments}/${offerId}`, {
-        comment: commentText,
-        rating,
-      });
-      return data;
-    } catch (error) {
-      dispatch(setError('Unable to post comment. Please try again later.'));
-      setTimeout(() => {
-        dispatch(clearError());
-      }, TIMEOUT_SHOW_ERROR);
-      return Promise.reject(error);
-    }
-  }
-);
 
 export const fetchFavoriteOffers = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;

@@ -78,7 +78,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.nearbyOffers = action.payload;
     })
     .addCase(postComment.fulfilled, (state, action) => {
-      state.offerComments = [action.payload[0], ...state.offerComments];
+      state.offerComments.unshift(action.payload);
     })
     .addCase(updateOffer, (state, action) => {
       if (state.offerDetails && state.offerDetails.id === action.payload.id) {
