@@ -18,7 +18,5 @@ export const setOfferComments = createAction<Review[]>('data/setOfferComments');
 export const setNearbyOffers = createAction<Offer[]>('data/setNearbyOffers');
 export const updateOffer = createAction<Offer>('offers/updateOffer');
 export const setFavoriteOffers = createAction<Offer[]>('offers/setFavoriteOffers');
-export const setOfferAsPending = createAction<string>('offers/setOfferAsPending');
-export const clearOfferFromPending = createAction<string>('offers/clearOfferFromPending');
 export const setShouldFetchComments = createAction<boolean>('offers/setShouldFetchComments');
 export const setShouldFetchFavorites = createAction<boolean>('offers/setShouldFetchFavorites');

@@ -1,10 +1,9 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import { MAX_REVIEW_LENGTH, MIN_REVIEW_LENGTH, RATING_TITLES } from '../../../const.ts';
+import { MAX_REVIEW_LENGTH, MIN_REVIEW_LENGTH, RATING_TITLES, TIMEOUT_SHOW_ERROR } from '../../../const.ts';
 import RatingStar from '../../ui/rating-star/rating-star.tsx';
 import { useAppDispatch } from '../../../hooks/index.ts';
 import { postComment } from '../../../store/api-action.ts';
 import { setError } from '../../../store/action.ts';
-import { TIMEOUT_SHOW_ERROR } from '../../../const.ts';
 import { fetchOfferComments } from '../../../store/api-action.ts';
 
 function RatingForm({ offerId }: { offerId: string }): JSX.Element {
