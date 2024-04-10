@@ -3,11 +3,13 @@ import { Offer, SortingOption } from '../../types/types.ts';
 import { CITY_LOCATIONS } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hooks/index.ts';
 import { setCity, setActiveOffer, setSortingOption } from '../../store/action.ts';
-import { selectActiveOffer, selectCity, selectOffers, selectSortingOption } from '../../store/selectors.ts';
+import { selectActiveOffer, selectCity, selectOffers, selectSortingOption, selectAuthorizationStatus, selectOffersDataLoading } from '../../store/selectors.ts';
 import HotelList from '../../components/blocks/hotel-list/hotel-list.tsx';
 import LocationList from '../../components/blocks/location-list/location-list.tsx';
 import Map from '../../components/ui/map/map.tsx';
 import SortingForm from '../../components/blocks/sorting-form/sorting-form.tsx';
+import { AuthorizationStatus } from '../../const.ts';
+import Spinner from '../../components/ui/spinner/spinner.tsx';
 
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -16,7 +18,16 @@ function MainPage(): JSX.Element {
   const activeOffer = useAppSelector(selectActiveOffer);
   const selectedSortingOption = useAppSelector(selectSortingOption);
 
-  const getSortedOffersby = (offersToSort: Offer[], sortingOption: string): Offer[] => {
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const isOffersDataLoading = useAppSelector(selectOffersDataLoading);
+
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
+    return (
+      <Spinner />
+    );
+  }
+
+  const getSortedOffersBy = (offersToSort: Offer[], sortingOption: string): Offer[] => {
     switch (sortingOption) {
       case 'Price: low to high':
         return [...offersToSort].sort((offerA, offerB) => offerA.price - offerB.price);
@@ -35,10 +46,10 @@ function MainPage(): JSX.Element {
     return <div>City not found</div>;
   }
 
-  const placesTitle = offers.length === 1 ? 'place' : 'places';
-  const filteredOffers = offers.filter((offer) => offer.city.name === city.name);
-  const sortedOffers = getSortedOffersby(filteredOffers, selectedSortingOption);
 
+  const filteredOffers = offers.filter((offer) => offer.city.name === city.name);
+  const sortedOffers = getSortedOffersBy(filteredOffers, selectedSortingOption);
+  const placesTitle = filteredOffers.length === 1 ? 'place' : 'places';
   const isEmptyPage = filteredOffers.length === 0;
 
   const handleCityClick = (cityName: string) => {

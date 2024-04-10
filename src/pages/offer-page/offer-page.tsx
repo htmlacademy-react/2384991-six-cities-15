@@ -1,11 +1,9 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import { Offer, Review } from '../../types/types.ts';
-import { createIdGenerator } from '../../utils/common.ts';
-import { AuthorizationStatus } from '../../const.ts';
-import { useAppSelector } from '../../hooks/index.ts';
-import { selectAuthorizationStatus } from '../../store/selectors.ts';
-import { CITY_LOCATIONS } from '../../const.ts';
+import { createIdGenerator, capitalizeFirstLetter } from '../../utils/common.ts';
+import { AuthorizationStatus, CITY_LOCATIONS } from '../../const.ts';
+import { useAppSelector, useAppDispatch } from '../../hooks/index.ts';
 import HotelList from '../../components/blocks/hotel-list/hotel-list.tsx';
 import Map from '../../components/ui/map/map.tsx';
 import OfferImage from '../../components/ui/offer-image/offer-image.tsx';
@@ -13,21 +11,42 @@ import OfferInsideList from '../../components/blocks/offer-inside-list/offer-ins
 import ReviewsList from '../../components/blocks/reviews-list/reviews-list.tsx';
 import RatingForm from '../../components/blocks/rating-form/rating-form.tsx';
 import NotFoundPage from '../not-found-page/not-found-page.tsx';
-import { selectCity, selectOffers } from '../../store/selectors.ts';
+import FavoriteButton from '../../components/ui/favorite-button/favorite-button.tsx';
+import { selectAuthorizationStatus, selectCity, selectOfferDetails, selectOfferComments, selectNearbyOffers } from '../../store/selectors.ts';
+import { fetchOfferDetailsById, fetchOfferComments, fetchNearbyOffers, fetchFavoriteOffers } from '../../store/api-action.ts';
 
 const offerImageId = createIdGenerator();
 
-type OfferPageProps = {
-  reviews: Review[];
-};
+const MAX_NEARBY_OFFERS_COUNT = 3;
+const MAX_IMAGES_COUNT = 6;
 
-function OfferPage({ reviews }: OfferPageProps): JSX.Element {
-  const { id } = useParams();
+function OfferPage(): JSX.Element {
+  const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchOfferDetailsById(id)).then((response) => {
+        if (response.meta.requestStatus === 'fulfilled') {
+          dispatch(fetchOfferComments(id));
+          dispatch(fetchNearbyOffers(id));
+        }
+      });
+    }
+  }, [id, dispatch]);
+
   const selectedCity = useAppSelector(selectCity);
-  const offers = useAppSelector(selectOffers);
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
+  const currentOffer = useAppSelector(selectOfferDetails);
+  const reviews = useAppSelector(selectOfferComments);
+  const nearOffers = useAppSelector(selectNearbyOffers);
 
-  const currentOffer: Offer | undefined = offers.find((offer) => offer.id === id);
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoriteOffers());
+    }
+  }, [dispatch, authorizationStatus]);
+
   if (!currentOffer) {
     return <NotFoundPage />;
   }
@@ -38,14 +57,21 @@ function OfferPage({ reviews }: OfferPageProps): JSX.Element {
     return <div>City information is missing</div>;
   }
 
-  const MAX_NEARBY_OFFERS_COUNT = 3;
-  const nearbyOffers = offers.filter((offer) => offer.city.name === selectedCity && offer.id !== currentOffer.id).slice(0, MAX_NEARBY_OFFERS_COUNT);
+  const nearbyOffers = nearOffers.filter((offer) => currentOffer.city.name === selectedCity && offer.id !== currentOffer.id).slice(0, MAX_NEARBY_OFFERS_COUNT);
 
   const { title, price, type, rating, isPremium, isFavorite, bedrooms, maxAdults, goods, description, host, images } = currentOffer;
   const { name: hostName, avatarUrl, isPro } = host;
 
+  const hotelType = capitalizeFirstLetter(type);
+
+  const roundedRating = Math.round(rating);
+  const ratingPercentage = roundedRating * 20;
+
+  const imagesToShow = images.slice(0, MAX_IMAGES_COUNT);
+
   const bedroomsTitle = `${bedrooms > 1 ? 'bedrooms' : 'bedroom'}`;
   const maxAdultsTitle = `${maxAdults > 1 ? 'adults' : 'adult'}`;
+  const offerId = id ?? 'defaultId';
 
   return(
     <>
@@ -56,7 +82,7 @@ function OfferPage({ reviews }: OfferPageProps): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {images.map((image) => (
+              {imagesToShow.map((image) => (
                 <OfferImage key={offerImageId()} src={image} />
               ))}
             </div>
@@ -71,22 +97,17 @@ function OfferPage({ reviews }: OfferPageProps): JSX.Element {
                 <h1 className="offer__name">
                   {title}
                 </h1>
-                <button className={`offer__bookmark-button button${isFavorite ? ' offer__bookmark-button--active' : ''}`} type="button">
-                  <svg className="offer__bookmark-icon" width={31} height={33}>
-                    <use xlinkHref="#icon-bookmark" />
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <FavoriteButton offerId={offerId} isFavorite={isFavorite} width={31} height={33} buttonType="offer" />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: `${rating * 20}%` }}></span>
+                  <span style={{ width: `${ratingPercentage}%` }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">{rating}</span>
               </div>
               <ul className="offer__features">
-                <li className="offer__feature offer__feature--entire">{type}</li>
+                <li className="offer__feature offer__feature--entire">{hotelType}</li>
                 <li className="offer__feature offer__feature--bedrooms">
                   {bedrooms} {bedroomsTitle}
                 </li>
@@ -98,12 +119,10 @@ function OfferPage({ reviews }: OfferPageProps): JSX.Element {
                 <b className="offer__price-value">€{price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
-              {goods.length > 1 ?
-                <div className="offer__inside">
-                  <h2 className="offer__inside-title">What&apos;s inside</h2>
-                  <OfferInsideList goods={goods}/>
-                </div> :
-                ''}
+              <div className="offer__inside">
+                <h2 className="offer__inside-title">What&apos;s inside</h2>
+                <OfferInsideList goods={goods}/>
+              </div>
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
@@ -130,7 +149,7 @@ function OfferPage({ reviews }: OfferPageProps): JSX.Element {
                   Reviews · <span className="reviews__amount">{reviews.length}</span>
                 </h2>
                 <ReviewsList reviews={reviews}/>
-                { authorizationStatus === AuthorizationStatus.Auth ? <RatingForm /> : '' }
+                {authorizationStatus === AuthorizationStatus.Auth && id && <RatingForm offerId={id} />}
               </section>
             </div>
           </div>

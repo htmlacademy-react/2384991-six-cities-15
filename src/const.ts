@@ -1,6 +1,5 @@
 import { CityLocationsArray } from './types/types.ts';
 
-const REVIEW_COUNT = 10;
 const AVATAR_URL = 'https://i.pravatar.cc/128';
 const URL_MARKER_DEFAULT = 'markup/img/pin.svg';
 const URL_MARKER_CURRENT = 'markup/img/pin-active.svg';
@@ -25,7 +24,7 @@ enum AuthorizationStatus {
 }
 enum APIRoute {
   Offers = '/offers',
-  Comment = '/comments',
+  Comments = '/comments',
   Favorite = 'favorite',
   Login = '/login',
   Logout = '/logout',
@@ -76,7 +75,6 @@ export {
   AppRoute,
   AuthorizationStatus,
   APIRoute,
-  REVIEW_COUNT,
   CITIES,
   TYPES,
   PLACES_OPTIONS,

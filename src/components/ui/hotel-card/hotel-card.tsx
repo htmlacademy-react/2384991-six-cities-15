@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { HotelCardOffers } from '../../../types/types.ts';
+import FavoriteButton from '../favorite-button/favorite-button.tsx';
+import { capitalizeFirstLetter } from '../../../utils/common.ts';
 
 type HotelCardAdditionalProps = {
   imageWidth: number;
@@ -12,6 +14,9 @@ type HotelCardAdditionalProps = {
 type HotelCardProps = HotelCardOffers & HotelCardAdditionalProps;
 
 function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, type, price, isFavorite, isPremium, previewImage, rating, id, onMouseOver, onMouseLeave }: HotelCardProps): JSX.Element {
+  const hotelType = capitalizeFirstLetter(type);
+  const roundedRating = Math.round(rating);
+  const ratingPercentage = roundedRating * 20;
 
   return(
     <article
@@ -41,30 +46,18 @@ function HotelCard({ imageWidth, imageHeight, baseClassName = 'cities', title, t
             <b className="place-card__price-value">€{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
-          <button
-            className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
-            type="button"
-          >
-            <svg
-              className="place-card__bookmark-icon"
-              width={18}
-              height={19}
-            >
-              <use xlinkHref="#icon-bookmark" />
-            </svg>
-            <span className="visually-hidden">{isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
-          </button>
+          <FavoriteButton offerId={id} isFavorite={isFavorite} buttonType="card" width={18} height={19}/>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${rating * 20}%` }}></span>
+            <span style={{ width: `${ratingPercentage}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{hotelType}</p>
       </div>
     </article>
   );

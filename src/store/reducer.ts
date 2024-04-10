@@ -1,7 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError } from './action.ts';
-import { Offer, LoggedUser } from '../types/types.ts';
+import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError, setOfferDetails, setNearbyOffers, setOfferComments, updateOffer, setShouldFetchComments, setShouldFetchFavorites } from './action.ts';
+import { Offer, LoggedUser, Review } from '../types/types.ts';
 import { AuthorizationStatus } from '../const.ts';
+import { fetchFavoriteOffers } from './api-action.ts';
 
 interface OffersState {
   currentCity: string;
@@ -12,6 +13,13 @@ interface OffersState {
   error: string | null;
   isOffersDataLoading: boolean;
   user: LoggedUser | null;
+  offerDetails: Offer | null;
+  offerComments: Review[];
+  nearbyOffers: Offer[];
+  isOneOfferDataLoading: boolean;
+  favoriteOffers: Offer[];
+  shouldFetchComments: boolean;
+  shouldFetchFavorites: boolean;
 }
 
 const initialState: OffersState = {
@@ -23,6 +31,13 @@ const initialState: OffersState = {
   error: null,
   isOffersDataLoading: false,
   user: null,
+  offerDetails: null,
+  offerComments: [],
+  nearbyOffers: [],
+  isOneOfferDataLoading: false,
+  favoriteOffers: [],
+  shouldFetchComments: true,
+  shouldFetchFavorites: true,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -56,6 +71,41 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(clearError, (state) => {
       state.error = null;
+    })
+    .addCase(setOfferDetails, (state, action) => {
+      state.offerDetails = action.payload;
+    })
+    .addCase(setOfferComments, (state, action) => {
+      state.offerComments = action.payload;
+    })
+    .addCase(setNearbyOffers, (state, action) => {
+      state.nearbyOffers = action.payload;
+    })
+    .addCase(setShouldFetchComments, (state, action) => {
+      state.shouldFetchComments = action.payload;
+    })
+    .addCase(setShouldFetchFavorites, (state, action) => {
+      state.shouldFetchFavorites = action.payload;
+    })
+    .addCase(updateOffer, (state, action) => {
+      if (state.offerDetails && state.offerDetails.id === action.payload.id) {
+        state.offerDetails = {...state.offerDetails, ...action.payload};
+      }
+      const offersIndex = state.offers.findIndex((offer) => offer.id === action.payload.id);
+      if (offersIndex !== -1) {
+        state.offers[offersIndex] = action.payload;
+      }
+      const nearbyOffersIndex = state.nearbyOffers.findIndex((offer) => offer.id === action.payload.id);
+      if (nearbyOffersIndex !== -1) {
+        state.nearbyOffers[nearbyOffersIndex] = action.payload;
+      }
+      const favoriteOffersIndex = state.favoriteOffers.findIndex((offer) => offer.id === action.payload.id);
+      if (favoriteOffersIndex !== -1) {
+        state.favoriteOffers[favoriteOffersIndex] = action.payload;
+      }
+    })
+    .addCase(fetchFavoriteOffers.fulfilled, (state, action) => {
+      state.favoriteOffers = action.payload;
     });
 });
 

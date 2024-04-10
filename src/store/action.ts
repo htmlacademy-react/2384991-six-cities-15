@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Offer } from '../types/types.ts';
+import { Offer, Review } from '../types/types.ts';
 import { UserData } from '../types/user-data.ts';
 import { AuthorizationStatus } from '../const.ts';
 
@@ -13,3 +13,12 @@ export const requireAuthorization = createAction<AuthorizationStatus>('user/requ
 export const setUser = createAction<UserData>('user/setUser');
 export const setError = createAction<string | null>('app/error');
 export const clearError = createAction('app/clearError');
+export const setOfferDetails = createAction<Offer | null>('data/setOfferDetails');
+export const setOfferComments = createAction<Review[]>('data/setOfferComments');
+export const setNearbyOffers = createAction<Offer[]>('data/setNearbyOffers');
+export const updateOffer = createAction<Offer>('offers/updateOffer');
+export const setFavoriteOffers = createAction<Offer[]>('offers/setFavoriteOffers');
+export const setOfferAsPending = createAction<string>('offers/setOfferAsPending');
+export const clearOfferFromPending = createAction<string>('offers/clearOfferFromPending');
+export const setShouldFetchComments = createAction<boolean>('offers/setShouldFetchComments');
+export const setShouldFetchFavorites = createAction<boolean>('offers/setShouldFetchFavorites');

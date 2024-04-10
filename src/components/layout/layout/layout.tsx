@@ -1,24 +1,41 @@
 import { Outlet, useLocation, Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../hooks/index.ts';
 import { AppRoute, AuthorizationStatus } from '../../../const';
 import { getLayoutState } from '../../../utils/layout-state';
-import { selectAuthorizationStatus, selectUserEmail } from '../../../store/selectors';
-import { logoutAction } from '../../../store/api-action.ts';
+import { selectAuthorizationStatus, selectFavoriteOffers, selectUser } from '../../../store/selectors';
+import { fetchFavoriteOffers, logoutAction } from '../../../store/api-action.ts';
 import Logo from '../../ui/logo/logo';
 import Footer from '../footer/footer';
+
 
 function Layout(): JSX.Element {
   const { pathname } = useLocation();
   const { rootClassName, linkClassName, shouldRenderUser } = getLayoutState(pathname as AppRoute);
   const authorizationStatus = useAppSelector(selectAuthorizationStatus);
-  const userEmail = useAppSelector(selectUserEmail);
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoriteOffers());
+    }
+  }, [dispatch, authorizationStatus]);
+
+  const favoriteOffers = useAppSelector(selectFavoriteOffers);
+
   const handleLogout = () => {
-    dispatch(logoutAction());
-    navigate(AppRoute.Root);
+    dispatch(logoutAction()).then(() => {
+      if (pathname.toString() === AppRoute.Favorites.toString()) {
+        navigate(AppRoute.Login);
+      } else {
+        navigate(pathname);
+      }
+    });
   };
+
+  const userEmail = user ? user.email : '';
 
   return(
     <div className={rootClassName}>
@@ -35,12 +52,13 @@ function Layout(): JSX.Element {
                 <ul className="header__nav-list">
                   <li className="header__nav-item user">
                     <Link className="header__nav-link header__nav-link--profile" to={ AppRoute.Favorites }>
-                      <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                       { authorizationStatus === AuthorizationStatus.Auth ? (
                         <>
+                          <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                           <span className="header__user-name user__name">
                             {userEmail}
-                          </span><span className="header__favorite-count">3</span>
+                          </span>
+                          <span className="header__favorite-count">{favoriteOffers.length}</span>
                         </>
                       ) : <span className="header__login">Sign in</span> }
                     </Link>
