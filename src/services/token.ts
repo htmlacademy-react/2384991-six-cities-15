@@ -20,8 +20,6 @@ export const saveUserEmail = (email: string): void => {
   localStorage.setItem(USER_EMAIL_KEY_NAME, email);
 };
 
-export const getUserEmail = (): string => localStorage.getItem(USER_EMAIL_KEY_NAME) ?? '';
-
 export const dropUserEmail = (): void => {
   localStorage.removeItem(USER_EMAIL_KEY_NAME);
 };

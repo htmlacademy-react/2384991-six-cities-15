@@ -1,6 +1,5 @@
 import { CityLocationsArray } from './types/types.ts';
 
-const AVATAR_URL = 'https://i.pravatar.cc/128';
 const URL_MARKER_DEFAULT = 'markup/img/pin.svg';
 const URL_MARKER_CURRENT = 'markup/img/pin-active.svg';
 const TILE_LAYER_URL_PATTERN = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
@@ -65,8 +64,6 @@ const CITY_LOCATIONS: CityLocationsArray = [
   },
 ];
 
-const TYPES = ['Room', 'Apartment', 'House', 'Hotel'];
-
 const PLACES_OPTIONS = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'] as const;
 
 const RATING_TITLES = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
@@ -76,10 +73,8 @@ export {
   AuthorizationStatus,
   APIRoute,
   CITIES,
-  TYPES,
   PLACES_OPTIONS,
   RATING_TITLES,
-  AVATAR_URL,
   URL_MARKER_DEFAULT,
   URL_MARKER_CURRENT,
   TILE_LAYER_URL_PATTERN,
