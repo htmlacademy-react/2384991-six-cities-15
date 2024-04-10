@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.ts';
-import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError, setOfferDetails, setOfferComments, setNearbyOffers, updateOffer } from './action.ts';
+import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError, setOfferDetails, setOfferComments, setNearbyOffers, updateOffer, setShouldFetchFavorites, setShouldFetchComments, setFavoriteOffers } from './action.ts';
 import { saveToken, dropToken, saveUserEmail, dropUserEmail } from '../services/token.ts';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const.ts';
 import { Offer, Review } from '../types/types.ts';
@@ -113,7 +113,10 @@ export const fetchOfferComments = createAsyncThunk<void, string, {
   extra: AxiosInstance;
 }>(
   'data/fetchOfferComments',
-  async (offerId, { dispatch, extra: api }) => {
+  async (offerId, { dispatch, getState, extra: api }) => {
+    if (!getState().shouldFetchComments) {
+      return;
+    }
     try {
       const { data } = await api.get<Review[]>(`${APIRoute.Comments}/${offerId}`);
       dispatch(setOfferComments(data));
@@ -132,12 +135,19 @@ export const postComment = createAsyncThunk<Review, { offerId: string; commentTe
   extra: AxiosInstance;
 }>(
   'data/postComment',
-  async ({ offerId, commentText, rating }, { dispatch, extra: api }) => {
+  async ({ offerId, commentText, rating }, { dispatch, getState, extra: api }) => {
+    dispatch(setShouldFetchComments(false));
     try {
       const { data } = await api.post<Review>(`${APIRoute.Comments}/${offerId}`, {
         comment: commentText,
         rating,
       });
+      // Получаем текущие комментарии из состояния
+      const currentComments: Review[] = getState().offerComments;
+      // Добавляем новый комментарий в начало массива
+      const updatedComments = [data, ...currentComments];
+      // Диспатчим обновленный массив комментариев
+      dispatch(setOfferComments(updatedComments));
       return data;
     } catch (error) {
       dispatch(setError('Unable to post comment. Please try again later.'));
@@ -148,6 +158,7 @@ export const postComment = createAsyncThunk<Review, { offerId: string; commentTe
     }
   }
 );
+
 
 export const fetchNearbyOffers = createAsyncThunk<void, string, {
   dispatch: AppDispatch;
@@ -168,24 +179,26 @@ export const fetchNearbyOffers = createAsyncThunk<void, string, {
   }
 );
 
-
 export const fetchFavoriteOffers = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'offers/fetchFavorites',
-  async (_, { dispatch, extra: api }) => {
-    try {
-      const response = await api.get<Offer[]>(APIRoute.Favorite);
-      return response.data;
-    } catch (error) {
-      dispatch(setError('Failed to get the list of favorite offers. Please, try again.'));
-      setTimeout(() => {
-        dispatch(clearError());
-      }, TIMEOUT_SHOW_ERROR);
-      return [];
+  async (_, { dispatch, getState, extra: api }) => {
+    if (getState().shouldFetchFavorites) {
+      try {
+        const response = await api.get<Offer[]>(APIRoute.Favorite);
+        return response.data;
+      } catch (error) {
+        dispatch(setError('Failed to get the list of favorite offers. Please, try again.'));
+      } finally {
+        setTimeout(() => {
+          dispatch(clearError());
+        }, TIMEOUT_SHOW_ERROR);
+      }
     }
+    return [];
   }
 );
 
@@ -195,16 +208,28 @@ export const toggleFavoriteStatus = createAsyncThunk<void, { offerId: string; st
   extra: AxiosInstance;
 }>(
   'offers/toggleFavorite',
-  async ({ offerId, status }, { dispatch, extra: api }) => {
+  async ({ offerId, status }, { dispatch, getState, extra: api }) => {
+    dispatch(setShouldFetchFavorites(false));
     try {
       const response = await api.post<Offer>(`${APIRoute.Favorite}/${offerId}/${status ? 1 : 0}`);
       dispatch(updateOffer(response.data));
-      dispatch(fetchFavoriteOffers());
+      if (!status) {
+        const updatedFavorites = getState().favoriteOffers.filter((offer) => offer.id !== offerId);
+        dispatch(setFavoriteOffers(updatedFavorites));
+      } else {
+        const newFavoriteOffer = response.data;
+        const updatedFavorites = [...getState().favoriteOffers, newFavoriteOffer];
+        dispatch(setFavoriteOffers(updatedFavorites));
+      }
     } catch (error) {
       dispatch(setError('Failed to change the status of the favorite offer. Please, try again.'));
       setTimeout(() => {
         dispatch(clearError());
       }, TIMEOUT_SHOW_ERROR);
+    } finally {
+      dispatch(setShouldFetchFavorites(true));
+      dispatch(fetchFavoriteOffers());
     }
   }
 );
+

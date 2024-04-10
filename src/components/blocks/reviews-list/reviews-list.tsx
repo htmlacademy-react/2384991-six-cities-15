@@ -14,7 +14,6 @@ const formatDate = (dateString: string) => {
 
 function ReviewsList({ reviews }: ReviewsListProps): JSX.Element {
   const sortedReviews = [...reviews].sort(compareDates);
-
   const MAX_REVIEWS_COUNT = 10;
   const sortedAndLimitedReviews = sortedReviews.slice(0, MAX_REVIEWS_COUNT);
 

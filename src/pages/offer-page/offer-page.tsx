@@ -17,6 +17,9 @@ import { fetchOfferDetailsById, fetchOfferComments, fetchNearbyOffers, fetchFavo
 
 const offerImageId = createIdGenerator();
 
+const MAX_NEARBY_OFFERS_COUNT = 3;
+const MAX_IMAGES_COUNT = 6;
+
 function OfferPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
@@ -54,7 +57,6 @@ function OfferPage(): JSX.Element {
     return <div>City information is missing</div>;
   }
 
-  const MAX_NEARBY_OFFERS_COUNT = 3;
   const nearbyOffers = nearOffers.filter((offer) => currentOffer.city.name === selectedCity && offer.id !== currentOffer.id).slice(0, MAX_NEARBY_OFFERS_COUNT);
 
   const { title, price, type, rating, isPremium, isFavorite, bedrooms, maxAdults, goods, description, host, images } = currentOffer;
@@ -65,7 +67,6 @@ function OfferPage(): JSX.Element {
   const roundedRating = Math.round(rating);
   const ratingPercentage = roundedRating * 20;
 
-  const MAX_IMAGES_COUNT = 6;
   const imagesToShow = images.slice(0, MAX_IMAGES_COUNT);
 
   const bedroomsTitle = `${bedrooms > 1 ? 'bedrooms' : 'bedroom'}`;

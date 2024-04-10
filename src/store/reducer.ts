@@ -1,8 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError, setOfferDetails, setNearbyOffers, setOfferComments, updateOffer } from './action.ts';
+import { setCity, setOffers, setActiveOffer, setSortingOption, loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUser, clearError, setOfferDetails, setNearbyOffers, setOfferComments, updateOffer, setShouldFetchComments, setShouldFetchFavorites } from './action.ts';
 import { Offer, LoggedUser, Review } from '../types/types.ts';
 import { AuthorizationStatus } from '../const.ts';
-import { postComment, fetchFavoriteOffers } from './api-action.ts';
+import { fetchFavoriteOffers } from './api-action.ts';
 
 interface OffersState {
   currentCity: string;
@@ -18,6 +18,8 @@ interface OffersState {
   nearbyOffers: Offer[];
   isOneOfferDataLoading: boolean;
   favoriteOffers: Offer[];
+  shouldFetchComments: boolean;
+  shouldFetchFavorites: boolean;
 }
 
 const initialState: OffersState = {
@@ -34,6 +36,8 @@ const initialState: OffersState = {
   nearbyOffers: [],
   isOneOfferDataLoading: false,
   favoriteOffers: [],
+  shouldFetchComments: true,
+  shouldFetchFavorites: true,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -77,8 +81,11 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setNearbyOffers, (state, action) => {
       state.nearbyOffers = action.payload;
     })
-    .addCase(postComment.fulfilled, (state, action) => {
-      state.offerComments.unshift(action.payload);
+    .addCase(setShouldFetchComments, (state, action) => {
+      state.shouldFetchComments = action.payload;
+    })
+    .addCase(setShouldFetchFavorites, (state, action) => {
+      state.shouldFetchFavorites = action.payload;
     })
     .addCase(updateOffer, (state, action) => {
       if (state.offerDetails && state.offerDetails.id === action.payload.id) {
